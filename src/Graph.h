@@ -1,12 +1,7 @@
 #ifndef LINECROSS_GRAPH_H
 #define LINECROSS_GRAPH_H
 
-#include <vector>
-#include "string"
-#include <iostream>
-
-
-using namespace std;
+#include "generic.h"
 
 class Dot {
 private:
@@ -41,17 +36,6 @@ public:
     double getB();
 
     double getC();
-};
-
-class Container {
-private:
-    vector<Dot> dots;
-public:
-    void add(vector<Dot> vec);
-
-    int size();
-
-    void print();
 };
 
 vector<Dot> solve(Graph *a, Graph *b);
