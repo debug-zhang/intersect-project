@@ -99,10 +99,14 @@ public:
 			Graph* l1 = new Line(0, 4, -4);
 			Graph* l2 = new Line(-1, 0, -2);
 			Graph* l3 = new Line(2, 4, 8);
+			Graph* l4 = new Line(2, 4, 9);
+			Graph* l5 = new Line(2, 4, 8);
 			vector<Dot> res;
 			res.push_back(solve(l1, l2)[0]);
 			res.push_back(solve(l1, l3)[0]);
 			res.push_back(solve(l3, l2)[0]);
+			Assert::AreEqual((int)solve(l3, l4).size(), 0);
+			Assert::AreEqual((int)solve(l3, l5).size(), 0);
 			for (Dot d : res) cout << d.getX() << d.getY() << endl;
 		}
 		//Ô²ºÍÏß
@@ -147,6 +151,22 @@ public:
 			Assert::AreEqual((int)res.size(), 1);
 			Assert::AreEqual(res[0].getX(), -300000.0);
 		}
+	}
+	TEST_METHOD(TestContainer) {
+		Container c;
+		vector<Dot> vec;
+		Dot d1(5, 4);
+		Dot d2(2, 4);
+		Dot d3(5, -1);
+		Dot d4(5, 4);
+		Dot d5(5, 4);
+		vec.push_back(d1);
+		vec.push_back(d2);
+		vec.push_back(d3);
+		vec.push_back(d4);
+		vec.push_back(d5);
+		c.add(vec);
+		Assert::AreEqual(c.size(),  3);
 	}
 	};
 }
