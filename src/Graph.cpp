@@ -75,8 +75,7 @@ vector<Dot> solve(Graph* g1, Graph* g2) {
 			Dot d(x, y);
 			res.push_back(d);
 		}
-	}
-	else if (aIsLine && !bIsLine) {
+	} else if (aIsLine && !bIsLine) {
 		//if g1 is line and g2 is circle
 		double _a = g1->getA(), _b = g1->getB(), _c = g1->getC();
 		double _m = g2->getA(), _n = g2->getB(), _r = g2->getC();
@@ -92,8 +91,7 @@ vector<Dot> solve(Graph* g1, Graph* g2) {
 				res.push_back(d1);
 				res.push_back(d2);
 			}
-		}
-		else {
+		} else {
 			double a = pow(_b, 2) + pow(_a, 2);
 			double b = (_a * _c - _m * pow(_b, 2) + _n * _a * _b) * 2;
 			double c = (pow(_m, 2) + pow(_n, 2) - pow(_r, 2)) * pow(_b, 2) + pow(_c, 2) + 2 * _n * _c * _b;
@@ -107,12 +105,10 @@ vector<Dot> solve(Graph* g1, Graph* g2) {
 				res.push_back(d2);
 			}
 		}
-	}
-	else if (!aIsLine && bIsLine) {
+	} else if (!aIsLine && bIsLine) {
 		//if g1 is circle and g2 is line
 		return solve(g2, g1);
-	}
-	else {
+	} else {
 		//if both are circle
 		double x1 = g1->getA(), y1 = g1->getB(), r1 = g1->getC();
 		double x2 = g2->getA(), y2 = g2->getB(), r2 = g2->getC();

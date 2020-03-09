@@ -3,12 +3,12 @@
 #include <vector>
 
 int main() {
-	int n;
-	cin >> n;
+	int line;
+	cin >> line;
 	Container container;
 	vector<Graph*> graphs;
 
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < line; i++) {
 		char type;
 		cin >> type;
 		if (type == 'L') {
@@ -22,8 +22,7 @@ int main() {
 				container.add(res);
 			}
 			graphs.push_back(l);
-		}
-		else if (type == 'C') {
+		} else if (type == 'C') {
 			int m, n, r;
 			cin >> m >> n >> r;
 			Circle* c = new Circle(m, n, r);
@@ -35,6 +34,6 @@ int main() {
 		}
 	}
 
-	container.print();
-	return 0;
+	 container.print();
+	 cout << container.size() << endl;
 }

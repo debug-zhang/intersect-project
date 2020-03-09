@@ -8,3 +8,4 @@ bin/
 *.vcxproj.filters
 *.vcxproj.user
 /Debug
+/test/lineCrossTest/Debug

@@ -5,13 +5,13 @@
 
 class Container {
 private:
-	vector<Dot> dots;
+    vector<Dot> dots;
 public:
-	void add(vector<Dot> vec);
+    void add(const vector<Dot> &vec);
 
-	int size();
+    int size();
 
-	void print();
+    void print();
 };
 
 #endif

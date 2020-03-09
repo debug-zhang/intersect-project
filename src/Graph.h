@@ -5,50 +5,54 @@
 
 class Dot {
 private:
-	double x, y;
+    double x, y;
 public:
-	Dot(double, double);
+    Dot(double, double);
 
-	double getX();
+    double getX();
 
-	double getY();
+    double getY();
 
-	bool equals(Dot b);
+    bool equals(Dot b);
 };
 
 class Graph {
 public:
-	virtual double getA() = 0;
+    virtual double getA() = 0;
 
-	virtual double getB() = 0;
+    virtual double getB() = 0;
 
-	virtual double getC() = 0;
+    virtual double getC() = 0;
 };
 
 class Line : public Graph {
 private:
-	double a, b, c;
+    double a, b, c;
 public:
-	Line(Dot d1, Dot d2);
+    Line(Dot d1, Dot d2);
 
-	Line(double, double, double);
+    Line(double, double, double);
 
-	double getA();
+    double getA() override;
 
-	double getB();
+    double getB() override;
 
-	double getC();
+    double getC() override;
 };
 
-class Circle :public Graph {
+class Circle : public Graph {
 private:
-	double m, n, r;
+    double m, n, r;
 public:
-	Circle(double, double, double);
-	double getA();
-	double getB();
-	double getC();
+    Circle(double, double, double);
+
+    double getA() override;
+
+    double getB() override;
+
+    double getC() override;
 };
-vector<Dot> solve(Graph* g1, Graph* g2);
+
+vector<Dot> solve(Graph *g1, Graph *g2);
 
 #endif
