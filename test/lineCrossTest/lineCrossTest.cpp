@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../../src/generic.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace lineCrossTest {
@@ -27,6 +26,10 @@ public:
 		Dot d7(-1.5 + 4.52341 - 4.53341, -1.131);
 		Assert::AreNotEqual(d7.getX(),  -1.51);
 		Assert::AreEqual(d7.equals(d6),  true);
+
+		Assert::AreEqual(d5 < d4, true);
+		Assert::AreEqual(d6 < d4, true);
+		Assert::AreEqual(d6 < d7, false);
 	}
 	TEST_METHOD(TestLine) {
 		Dot d1(1416, 5333);

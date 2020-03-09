@@ -1,23 +1,25 @@
 #include "Graph.h"
 
 Dot::Dot(double a, double b) {
-	x = a;
-	y = b;
+	first = a;
+	second = b;
 }
 
-double Dot::getX() {
-	return x;
+inline double Dot::getX() {
+	return first;
 }
 
-double Dot::getY() {
-	return y;
+inline double Dot::getY() {
+	return second;
 }
 
 bool Dot::equals(Dot b) {
-	const double eps = 1e-6;
-	bool x = -eps <= (this->getX() - b.getX()) && (this->getX() - b.getX()) <= eps;
-	bool y = -eps <= (this->getY() - b.getY()) && (this->getY() - b.getY()) <= eps;
+	/*
+	bool x = -EPS <= (this->getX() - b.getX()) && (this->getX() - b.getX()) <= EPS;
+	bool y = -EPS <= (this->getY() - b.getY()) && (this->getY() - b.getY()) <= EPS;
 	return x && y;
+	*/
+	return first == b.first && second == b.second;
 }
 
 Line::Line(Dot d1, Dot d2) {
@@ -32,15 +34,15 @@ Line::Line(double varX, double varY, double varC) {
 	c = varC;
 }
 
-double Line::getA() {
+inline double Line::getA() {
 	return a;
 }
 
-double Line::getB() {
+inline double Line::getB() {
 	return b;
 }
 
-double Line::getC() {
+inline double Line::getC() {
 	return c;
 }
 
@@ -50,20 +52,19 @@ Circle::Circle(double varM, double varN, double varR) {
 	r = varR;
 }
 
-double Circle::getA() {
+inline double Circle::getA() {
 	return m;
 }
 
-double Circle::getB() {
+inline double Circle::getB() {
 	return n;
 }
 
-double Circle::getC() {
+inline double Circle::getC() {
 	return r;
 }
 
-vector<Dot> solve(Graph* g1, Graph* g2) {
-	vector<Dot> res;
+void solve(Container *con, Graph* g1, Graph* g2){
 	bool aIsLine = typeid(*g1).name() == typeid(Line).name();
 	bool bIsLine = typeid(*g2).name() == typeid(Line).name();
 
@@ -75,8 +76,7 @@ vector<Dot> solve(Graph* g1, Graph* g2) {
 			//if not parrallel
 			double x = (b1 * c2 - b2 * c1) / (a1 * b2 - a2 * b1);
 			double y = (a2 * c1 - a1 * c2) / (a1 * b2 - a2 * b1);
-			Dot d(x, y);
-			res.push_back(d);
+			con->add(Dot(x, y));
 		}
 	} else if (aIsLine && !bIsLine) {
 		//if g1 is line and g2 is circle
@@ -89,10 +89,8 @@ vector<Dot> solve(Graph* g1, Graph* g2) {
 			if (dis >= 0) {
 				double y1 = _n + sqrt(dis);
 				double y2 = _n + -sqrt(dis);
-				Dot d1(x1, y1);
-				Dot d2(x2, y2);
-				res.push_back(d1);
-				res.push_back(d2);
+				con->add(Dot(x1, y1));
+				con->add(Dot(x2, y2));
 			}
 		} else {
 			double a = pow(_b, 2) + pow(_a, 2);
@@ -102,15 +100,13 @@ vector<Dot> solve(Graph* g1, Graph* g2) {
 			if (delta >= 0) {
 				double x1 = (-b + sqrt(delta)) / (2 * a), x2 = (-b - sqrt(delta)) / (2 * a);
 				double y1 = (_a * x1 + _c) / (-_b), y2 = (_a * x2 + _c) / (-_b);
-				Dot d1(x1, y1);
-				Dot d2(x2, y2);
-				res.push_back(d1);
-				res.push_back(d2);
+				con->add(Dot(x1, y1));
+				con->add(Dot(x2, y2));
 			}
 		}
 	} else if (!aIsLine && bIsLine) {
 		//if g1 is circle and g2 is line
-		return solve(g2, g1);
+		return solve(con, g2, g1);
 	} else {
 		//if both are circle
 		double x1 = g1->getA(), y1 = g1->getB(), r1 = g1->getC();
@@ -119,7 +115,6 @@ vector<Dot> solve(Graph* g1, Graph* g2) {
 		double _b = 2 * (y1 - y2);
 		double _c = pow(x2, 2) - pow(x1, 2) + pow(y2, 2) - pow(y1, 2) - pow(r2, 2) + pow(r1, 2);
 		Line* l = new Line(_a, _b, _c);
-		return solve(l, g2);
+		return solve(con, l, g2);
 	}
-	return res;
 }

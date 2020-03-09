@@ -1,31 +1,9 @@
-#include "Container.h"
+#include "Graph.h"
 
-void Container::add(const vector<Dot> &vec) {
-    for (Dot d : vec) {
-        if (dots.empty()) {
-            dots.push_back(d);
-        } else {
-            bool has = false;
-            for (Dot i : dots) {
-                if (i.equals(d)) {
-                    has = true;
-                    break;
-                }
-            }
-            if (!has) {
-                dots.push_back(d);
-            }
-        }
-    }
+void Container::add(Dot d) {
+		dots.insert(d);
 }
-
 
 int Container::size() {
-    return dots.size();
-}
-
-void Container::print() {
-    for (Dot d : dots) {
-        cout << "(" << d.getX() << "," << d.getY() << ")" << endl;
-    }
+	return dots.size();
 }

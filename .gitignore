@@ -9,3 +9,6 @@ bin/
 *.vcxproj.user
 /Debug
 /test/lineCrossTest/Debug
+/x64/Debug
+/test/lineCrossTest/x64/Debug
+/test/lineCrossTest/Release

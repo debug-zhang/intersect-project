@@ -3,56 +3,63 @@
 
 #include "generic.h"
 
-class Dot {
-private:
-    double x, y;
+class Dot :public pair<double,double>{
 public:
-    Dot(double, double);
+	Dot(double, double);
 
-    double getX();
+	inline double getX();
 
-    double getY();
+	inline double getY();
 
-    bool equals(Dot b);
+	bool equals(Dot b);
 };
 
 class Graph {
 public:
-    virtual double getA() = 0;
+	virtual double getA() = 0;
 
-    virtual double getB() = 0;
+	virtual double getB() = 0;
 
-    virtual double getC() = 0;
+	virtual double getC() = 0;
 };
 
 class Line : public Graph {
 private:
-    double a, b, c;
+	double a, b, c;
 public:
-    Line(Dot d1, Dot d2);
+	Line(Dot d1, Dot d2);
 
-    Line(double, double, double);
+	Line(double, double, double);
 
-    double getA() override;
+	inline double getA() override;
 
-    double getB() override;
+	inline double getB() override;
 
-    double getC() override;
+	inline double getC() override;
 };
 
 class Circle : public Graph {
 private:
-    double m, n, r;
+	double m, n, r;
 public:
-    Circle(double, double, double);
+	Circle(double, double, double);
 
-    double getA() override;
+	inline double getA() override;
 
-    double getB() override;
+	inline double getB() override;
 
-    double getC() override;
+	inline double getC() override;
 };
 
-vector<Dot> solve(Graph *g1, Graph *g2);
+class Container {
+private:
+	set<Dot> dots;
+public:
+	void add(Dot d);
+
+	int size();
+};
+
+void solve(Container *con, Graph* g1, Graph* g2);
 
 #endif
