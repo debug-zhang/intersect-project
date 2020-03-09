@@ -34,6 +34,7 @@ int main() {
 		}
 	}
 
-	 container.print();
-	 cout << container.size() << endl;
+	//container.print();
+	cout << container.size() << endl;
+	return 0;
 }

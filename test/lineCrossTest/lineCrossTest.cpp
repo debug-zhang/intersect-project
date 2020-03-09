@@ -23,6 +23,10 @@ public:
 		Assert::AreEqual(d1->equals(d4), true);
 		Assert::AreEqual(d1->equals(d5), false);
 		Assert::AreEqual(d1->equals(d6), false);
+
+		Dot d7(-1.5 + 4.52341 - 4.53341, -1.131);
+		Assert::AreNotEqual(d7.getX(),  -1.51);
+		Assert::AreEqual(d7.equals(d6),  true);
 	}
 	TEST_METHOD(TestLine) {
 		Dot d1(1416, 5333);

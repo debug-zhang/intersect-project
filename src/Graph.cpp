@@ -14,7 +14,10 @@ double Dot::getY() {
 }
 
 bool Dot::equals(Dot b) {
-	return this->getX() == b.getX() && this->getY() == b.getY();
+	const double eps = 1e-6;
+	bool x = -eps <= (this->getX() - b.getX()) && (this->getX() - b.getX()) <= eps;
+	bool y = -eps <= (this->getY() - b.getY()) && (this->getY() - b.getY()) <= eps;
+	return x && y;
 }
 
 Line::Line(Dot d1, Dot d2) {

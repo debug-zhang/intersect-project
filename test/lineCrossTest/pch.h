@@ -9,5 +9,7 @@
 
 // 添加要在此处预编译的标头
 #include "../../src/Container.h"
+#include "../../src/generic.h"
+
 
 #endif //PCH_H

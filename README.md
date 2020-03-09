@@ -1,3 +1,12 @@
+| 项目                                              | 内容                                                         |
+| :------------------------------------------------ | :----------------------------------------------------------- |
+| 课程：北航2020春软件工程                          | [博客园班级博客](https://edu.cnblogs.com/campus/buaa/BUAA_SE_2020_LJ) |
+| 作业：完成一个平面图形求交点的程序，体验PSP的过程 | [个人项目作业](https://edu.cnblogs.com/campus/buaa/BUAA_SE_2020_LJ/homework/10429) |
+| 我在这个课程的目标是                              | 体验软件开发的全流程                                         |
+| 这个作业在哪个具体方面帮助我实现目标              | 体会PSP的过程                                                |
+| 教学班级                                          | 006                                                          |
+| 项目地址                                          | https://github.com/lzhmarkk/lineCross                        |
+
 
 
 ### 时间规划
@@ -14,12 +23,12 @@
 | · Design                                | · 具体设计                              | 15               | 10               |
 | · Coding                                | · 具体编码                              | 30               | 80               |
 | · Code Review                           | · 代码复审                              | 10               | 5                |
-| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 30               |                  |
+| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 30               | 120              |
 | Reporting                               | 报告                                    |                  |                  |
-| · Test Report                           | · 测试报告                              | 10               |                  |
-| · Size Measurement                      | · 计算工作量                            | 5                |                  |
-| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 5                |                  |
-|                                         | 合计                                    | 310              |                  |
+| · Test Report                           | · 测试报告                              | 10               | 30               |
+| · Size Measurement                      | · 计算工作量                            | 5                | 5                |
+| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 5                | 5                |
+|                                         | 合计                                    | 310              | 478              |
 
 ### 需求分析
 
@@ -127,3 +136,8 @@ class Container {};//用于存储交点，并除去重合的点
 ![](./readmeAssets/FuncSolve2.png)
 
 ### 测试
+
+在测试方面，首先测试Dot类，其中包括了以下几个方面：
+
++ 构造函数
++ equals()方法测试，尤其是队友double类型的
