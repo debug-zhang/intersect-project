@@ -2,7 +2,6 @@ cmake-build-debug/
 CMakeLists.txt
 .idea/
 .vs/
-bin/
 *.sln
 *.vcxproj
 *.vcxproj.filters
@@ -12,3 +11,12 @@ bin/
 /x64/Debug
 /test/lineCrossTest/x64/Debug
 /test/lineCrossTest/Release
+/bin/lineCross.tlog
+/bin/*.obj
+/bin/*.xml
+/bin/*.sarif
+/bin/*.pdb
+/bin/*.tlog
+/bin/*.log
+/bin/lineCross.exe.lastcodeanalysissucceeded
+*.txt

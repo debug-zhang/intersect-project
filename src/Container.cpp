@@ -1,7 +1,8 @@
 #include "Graph.h"
 
 void Container::add(Dot d) {
-		dots.insert(d);
+	cout << "found point " << '(' << d.first << ',' << d.second << ')' << endl;
+	dots.insert(d);
 }
 
 int Container::size() {
