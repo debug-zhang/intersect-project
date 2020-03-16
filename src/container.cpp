@@ -10,7 +10,7 @@ int Container::Size() {
 }
 
 bool IsSameSymbol(double a, double b) {
-	return (a > 0 && b > 0) || (a < 0 && b < 0);
+	return (a >= 0 && b >= 0) || (a <= 0 && b <= 0);
 }
 
 bool IsInRadialLimit(Dot* intersect, Radial* radial) {
@@ -26,10 +26,10 @@ bool IsInSegmentLimit(Dot* intersect, Segment* segment) {
 	Dot* end_point1 = segment->GetEndPoint1();
 	Dot* end_point2 = segment->GetEndPoint2();
 
-	return intersect->GetX() > min(end_point1->GetX(), end_point2->GetX())
-		&& intersect->GetX() < max(end_point1->GetX(), end_point2->GetX())
-		&& intersect->GetY() > min(end_point1->GetY(), end_point2->GetY())
-		&& intersect->GetY() < max(end_point1->GetY(), end_point2->GetY());
+	return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
+		&& intersect->GetX() <= max(end_point1->GetX(), end_point2->GetX())
+		&& intersect->GetY() >= min(end_point1->GetY(), end_point2->GetY())
+		&& intersect->GetY() <= max(end_point1->GetY(), end_point2->GetY());
 }
 
 void Solve(Container* container, Graph* g1, Graph* g2) {

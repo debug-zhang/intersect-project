@@ -83,6 +83,34 @@ namespace UnitTest
 			c.Add(d5);
 			Assert::AreEqual(c.Size(), 3);
 		}
+
+		TEST_METHOD(TestIsInSegmentLimit) {
+			Segment* segment = new Segment(Dot(0, 2), Dot(3, -1));
+
+			Assert::IsTrue(IsInSegmentLimit(new Dot(0, 2), segment));
+			Assert::IsTrue(IsInSegmentLimit(new Dot(3, -1), segment));
+
+			Assert::IsTrue(IsInSegmentLimit(new Dot(1, 1), segment));
+			Assert::IsTrue(IsInSegmentLimit(new Dot(2, 0), segment));
+
+			Assert::IsFalse(IsInSegmentLimit(new Dot(-1, 3), segment));
+			Assert::IsFalse(IsInSegmentLimit(new Dot(4, -2), segment));
+
+
+		}
+
+		TEST_METHOD(TestIsInRadialLimit) {
+			Radial* radial = new Radial(Dot(0, 2), Dot(3, -1));
+
+			Assert::IsTrue(IsInRadialLimit(new Dot(0, 2), radial));
+			Assert::IsTrue(IsInRadialLimit(new Dot(3, -1), radial));
+
+			Assert::IsTrue(IsInRadialLimit(new Dot(1, 1), radial));
+			Assert::IsTrue(IsInRadialLimit(new Dot(2, 0), radial));
+
+			Assert::IsFalse(IsInRadialLimit(new Dot(-1, 3), radial));
+			Assert::IsTrue(IsInRadialLimit(new Dot(4, -2), radial));
+		}
 	};
 
 }

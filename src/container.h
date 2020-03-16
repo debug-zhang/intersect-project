@@ -14,4 +14,10 @@ public:
 	int Size();
 };
 
+bool IsSameSymbol(double a, double b);
+
+bool IsInRadialLimit(Dot* intersect, Radial* radial);
+
+bool IsInSegmentLimit(Dot* intersect, Segment* segment);
+
 void Solve(Container* container, Graph* g1, Graph* g2);
