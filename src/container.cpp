@@ -37,10 +37,12 @@ void Solve(Container* container, Graph* g1, Graph* g2) {
 	double A1 = g1->GetA(), B1 = g1->GetB(), C1 = g1->GetC();
 	double A2 = g2->GetA(), B2 = g2->GetB(), C2 = g2->GetC();
 
+	double denominator = A1 * B2 != A2 * B1;
+
 	//if not parrallel
-	if (A1 * B2 != A2 * B1) {
-		double x = (B1 * C2 - B2 * C1) / (A1 * B2 - A2 * B1);
-		double y = (A2 * C1 - A1 * C2) / (A1 * B2 - A2 * B1);
+	if (denominator != 0) {
+		double x = (B1 * C2 - B2 * C1) / denominator;
+		double y = (A2 * C1 - A1 * C2) / denominator;
 		Dot* intersect = new Dot(x, y);
 		bool flag = true;
 
