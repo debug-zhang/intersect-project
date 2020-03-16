@@ -19,6 +19,5 @@ double Dot::GetY() {
 }
 
 bool Dot::equals(Dot b) {
-	return fabs(first - b.first) < 1e-10
-		&& fabs(second - b.second) < 1e-10;
+	return DoubleEquals(first, b.first) && DoubleEquals(second, b.second);
 }

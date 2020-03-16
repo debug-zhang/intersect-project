@@ -30,6 +30,24 @@ namespace UnitTest
 			Dot d7(-1.5 + 4.52341 - 4.53341, -1.131);
 			Assert::AreNotEqual(d7.GetX(), -1.51);
 			Assert::AreEqual(d7.equals(d6), true);
+
+			Dot d8(77940 / 11959, 78005 / 11969);
+			Assert::AreEqual(d8.equals(Dot(77940 / 11959, 78005 / 11969)), true);
+			Dot d9(77940 / 11959+1.11111111- 1.11111111, 78005 / 11969 +0.33333333- 0.33333333);
+			Assert::AreEqual(d9.equals(Dot(77940 / 11959, 78005 / 11969)), true);
+			Assert::AreEqual(d9.equals(d8), true);
+			Assert::AreEqual(d9.equals(Dot(77940 / 11959 + 1.11111111 - 1.11111111, 
+				78005 / 11969 + 0.33333333 - 0.33333333)), true);
+			Assert::AreEqual(d9.equals(Dot(77940 / 11959, 78005 / 11969)), true);
+
+			Dot d10(16451 / 16447, 48119 / 48121);
+			Assert::AreEqual(d10.equals(Dot(16451 / 16447, 48119 / 48121)), true);
+			Dot d11(16451 / 16447 + 0.99999999 - 0.99999999, 48119 / 48121 + 0.000000003 - 0.000000003);
+			Assert::AreEqual(d11.equals(Dot(16451 / 16447, 48119 / 48121)), true);
+			Assert::AreEqual(d11.equals(d10), true);
+			Assert::AreEqual(d11.equals(Dot(16451 / 16447 + 0.99999999 - 0.99999999,
+				48119 / 48121 + 0.000000003 - 0.000000003)), true);
+			Assert::AreEqual(d11.equals(Dot(16451 / 16447, 48119 / 48121)), true);
 		}
 
 		TEST_METHOD(TestLine) {
