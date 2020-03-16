@@ -79,12 +79,35 @@ namespace UnitTest
 
 			Solve(container, segment, line);
 			Assert::AreEqual(container->Size(), 1);
-
 			Solve(container, segment, radial);
 			Assert::AreEqual(container->Size(), 1);
-
 			Solve(container, line, radial);
 			Assert::AreEqual(container->Size(), 1);
+
+
+			container = new Container();
+			segment = new Segment(Dot(1, 1), Dot(1, -1));
+			line = new Line(Dot(2, 2), Dot(2, 0));
+			radial = new Radial(Dot(3, 3), Dot(3, 4));
+
+			Solve(container, segment, line);
+			Assert::AreEqual(container->Size(), 0);
+			Solve(container, segment, radial);
+			Assert::AreEqual(container->Size(), 0);
+			Solve(container, line, radial);
+			Assert::AreEqual(container->Size(), 0);
+
+			container = new Container();
+			segment = new Segment(Dot(2, 4), Dot(3, 2));
+			line = new Line(Dot(-1, 4), Dot(5, 2));
+			radial = new Radial(Dot(2, 5), Dot(-1, 2));
+
+			Solve(container, segment, line);
+			Assert::AreEqual(container->Size(), 1);
+			Solve(container, segment, radial);
+			Assert::AreEqual(container->Size(), 1);
+			Solve(container, line, radial);
+			Assert::AreEqual(container->Size(), 2);
 		}
 
 		TEST_METHOD(TestContainer) {
@@ -113,8 +136,6 @@ namespace UnitTest
 
 			Assert::IsFalse(IsInSegmentLimit(new Dot(-1, 3), segment));
 			Assert::IsFalse(IsInSegmentLimit(new Dot(4, -2), segment));
-
-
 		}
 
 		TEST_METHOD(TestIsInRadialLimit) {
