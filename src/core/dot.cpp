@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "dot.h"
 
 Dot::Dot(double x, double y) {

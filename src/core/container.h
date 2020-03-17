@@ -6,10 +6,10 @@
 #include "radial.h"
 #include "segment.h"
 
-class Container {
+class _declspec(dllexport) Container {
 private:
-	vector<Graph*> graphs;
-	set<Dot> dots;
+	vector<Graph*>* graphs;
+	set<Dot>* dots;
 
 	bool IsSameSymbol(double a, double b);
 
@@ -21,13 +21,13 @@ public:
 
 	int Size();
 
-	vector<Graph*> Getgraphs();
+	vector<Graph*>* Getgraphs();
 
-	set<Dot> GetDots();
+	set<Dot>* GetDots();
 
 	void IntersectCalculate(Graph* g1, Graph* g2);
 
 	void AddDot(Dot d);
 
-	void AddGraph(Graph* new_graph);
+	void AddGraph(char type,int x1, int y1, int x2, int y2);
 };

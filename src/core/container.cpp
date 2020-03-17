@@ -1,7 +1,9 @@
+#include "pch.h"
 #include "container.h"
 
 Container::Container() {
-
+	this->graphs = new vector<Graph*>;
+	this->dots = new set<Dot>;
 }
 
 bool  Container::IsSameSymbol(double a, double b) {
@@ -29,14 +31,14 @@ bool  Container::IsInSegmentLimit(Dot* intersect, Segment* segment) {
 
 
 int Container::Size() {
-	return (int)dots.size();
+	return (int)dots->size();
 }
 
-vector<Graph*> Container::Getgraphs() {
+vector<Graph*>* Container::Getgraphs() {
 	return graphs;
 }
 
-set<Dot> Container::GetDots() {
+set<Dot>* Container::GetDots() {
 	return dots;
 }
 
@@ -79,14 +81,31 @@ void  Container::IntersectCalculate(Graph* g1, Graph* g2) {
 }
 
 void Container::AddDot(Dot d) {
-	dots.insert(d);
+	dots->insert(d);
 }
 
-void Container::AddGraph(Graph* new_graph) {
-	if (new_graph != NULL) {
-		for (Graph* graph : graphs) {
-			IntersectCalculate(new_graph, graph);
+void Container::AddGraph(char type, int x1, int y1, int x2, int y2) {
+		Graph* new_graph = NULL;
+		if (type == 'L') {
+			Dot d1(x1, y1);
+			Dot d2(x2, y2);
+			new_graph = new Line(d1, d2);
+
+		} else if (type == 'R') {
+			Dot d1(x1, y1);
+			Dot d2(x2, y2);
+			new_graph = new Radial(d1, d2);
+
+		} else if (type == 'S') {
+			Dot d1(x1, y1);
+			Dot d2(x2, y2);
+			new_graph = new Segment(d1, d2);
 		}
-		graphs.push_back(new_graph);
-	}
+
+		if (new_graph != NULL) {
+			for (Graph* graph : *graphs) {
+				IntersectCalculate(new_graph, graph);
+			}
+			graphs->push_back(new_graph);
+		}
 }

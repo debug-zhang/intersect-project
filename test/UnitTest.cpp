@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CppUnitTest.h"
-#include "../IntersectProject/container.h"
+#include "../IntersectProject/core/container.h"
+
+class _declspec(dllexport) Container;
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
