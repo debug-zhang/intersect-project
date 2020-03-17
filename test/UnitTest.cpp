@@ -71,17 +71,32 @@ namespace UnitTest
 			Assert::AreEqual(-lineSlant2.GetC() / lineSlant2.GetB(), 5.0 - 6744 * 5328 / 1332);
 		}
 
+		TEST_METHOD(TestContainer) {
+			Container c;
+			Dot d1(5, 4);
+			Dot d2(2, 4);
+			Dot d3(5, -1);
+			Dot d4(5, 4);
+			Dot d5(5, 4);
+			c.AddDot(d1);
+			c.AddDot(d2);
+			c.AddDot(d3);
+			c.AddDot(d4);
+			c.AddDot(d5);
+			Assert::AreEqual(c.Size(), 3);
+		}
+
 		TEST_METHOD(TestSolve) {
 			Container* container = new Container();
 			Segment* segment = new Segment(Dot(-1, 3), Dot(2, -1));
 			Line* line = new Line(Dot(-2, 2), Dot(3, 0));
-			Radial* radial = new Radial(Dot(-3,0), Dot(4, 2));
+			Radial* radial = new Radial(Dot(-3, 0), Dot(4, 2));
 
-			Solve(container, segment, line);
+			container->IntersectCalculate(segment, line);
 			Assert::AreEqual(container->Size(), 1);
-			Solve(container, segment, radial);
+			container->IntersectCalculate(segment, radial);
 			Assert::AreEqual(container->Size(), 1);
-			Solve(container, line, radial);
+			container->IntersectCalculate(line, radial);
 			Assert::AreEqual(container->Size(), 1);
 
 
@@ -90,11 +105,11 @@ namespace UnitTest
 			line = new Line(Dot(2, 2), Dot(2, 0));
 			radial = new Radial(Dot(3, 3), Dot(3, 4));
 
-			Solve(container, segment, line);
+			container->IntersectCalculate(segment, line);
 			Assert::AreEqual(container->Size(), 0);
-			Solve(container, segment, radial);
+			container->IntersectCalculate(segment, radial);
 			Assert::AreEqual(container->Size(), 0);
-			Solve(container, line, radial);
+			container->IntersectCalculate(line, radial);
 			Assert::AreEqual(container->Size(), 0);
 
 			container = new Container();
@@ -102,53 +117,48 @@ namespace UnitTest
 			line = new Line(Dot(-1, 4), Dot(5, 2));
 			radial = new Radial(Dot(2, 5), Dot(-1, 2));
 
-			Solve(container, segment, line);
+			container->IntersectCalculate(segment, line);
 			Assert::AreEqual(container->Size(), 1);
-			Solve(container, segment, radial);
+			container->IntersectCalculate(segment, radial);
 			Assert::AreEqual(container->Size(), 1);
-			Solve(container, line, radial);
+			container->IntersectCalculate(line, radial);
 			Assert::AreEqual(container->Size(), 2);
-		}
 
-		TEST_METHOD(TestContainer) {
-			Container c;
-			Dot d1(5, 4);
-			Dot d2(2, 4);
-			Dot d3(5, -1);
-			Dot d4(5, 4);
-			Dot d5(5, 4);
-			c.Add(d1);
-			c.Add(d2);
-			c.Add(d3);
-			c.Add(d4);
-			c.Add(d5);
-			Assert::AreEqual(c.Size(), 3);
-		}
+			container = new Container();
+			segment = new Segment(Dot(0, 2), Dot(3, -1));
+			line = new Line(Dot(0, 2), Dot(2, 2));
+			radial = new Radial(Dot(0, 2), Dot(3, -1));
+			container->IntersectCalculate(segment, line);
+			Assert::AreEqual(container->Size(), 1);
+			container->IntersectCalculate(line, radial);
+			Assert::AreEqual(container->Size(), 1);
 
-		TEST_METHOD(TestIsInSegmentLimit) {
-			Segment* segment = new Segment(Dot(0, 2), Dot(3, -1));
+			container = new Container();
+			segment = new Segment(Dot(0, 2), Dot(3, -1));
+			line = new Line(Dot(3, -1), Dot(4, 2));
+			radial = new Radial(Dot(0, 2), Dot(3, -1));
+			container->IntersectCalculate(segment, line);
+			Assert::AreEqual(container->Size(), 1);
+			container->IntersectCalculate(line, radial);
+			Assert::AreEqual(container->Size(), 1);
 
-			Assert::IsTrue(IsInSegmentLimit(new Dot(0, 2), segment));
-			Assert::IsTrue(IsInSegmentLimit(new Dot(3, -1), segment));
+			container = new Container();
+			segment = new Segment(Dot(0, 2), Dot(3, -1));
+			line = new Line(Dot(-1, 3), Dot(-5, 0));
+			radial = new Radial(Dot(0, 2), Dot(3, -1));
+			container->IntersectCalculate(segment, line);
+			Assert::AreEqual(container->Size(), 0);
+			container->IntersectCalculate(line, radial);
+			Assert::AreEqual(container->Size(), 0);
 
-			Assert::IsTrue(IsInSegmentLimit(new Dot(1, 1), segment));
-			Assert::IsTrue(IsInSegmentLimit(new Dot(2, 0), segment));
-
-			Assert::IsFalse(IsInSegmentLimit(new Dot(-1, 3), segment));
-			Assert::IsFalse(IsInSegmentLimit(new Dot(4, -2), segment));
-		}
-
-		TEST_METHOD(TestIsInRadialLimit) {
-			Radial* radial = new Radial(Dot(0, 2), Dot(3, -1));
-
-			Assert::IsTrue(IsInRadialLimit(new Dot(0, 2), radial));
-			Assert::IsTrue(IsInRadialLimit(new Dot(3, -1), radial));
-
-			Assert::IsTrue(IsInRadialLimit(new Dot(1, 1), radial));
-			Assert::IsTrue(IsInRadialLimit(new Dot(2, 0), radial));
-
-			Assert::IsFalse(IsInRadialLimit(new Dot(-1, 3), radial));
-			Assert::IsTrue(IsInRadialLimit(new Dot(4, -2), radial));
+			container = new Container();
+			segment = new Segment(Dot(0, 2), Dot(3, -1));
+			line = new Line(Dot(4, 2), Dot(5, 0));
+			radial = new Radial(Dot(0, 2), Dot(3, -1));
+			container->IntersectCalculate(segment, line);
+			Assert::AreEqual(container->Size(), 0);
+			container->IntersectCalculate(line, radial);
+			Assert::AreEqual(container->Size(), 1);
 		}
 	};
 
