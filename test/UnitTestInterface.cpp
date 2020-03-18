@@ -53,6 +53,18 @@ namespace UnitTest
 			container->AddGraph('L', 4, 2, 5, 0);
 			container->AddGraph('R', 0, 2, 3, -1);
 			Assert::AreEqual(container->Size(), 1);
+
+			container = new Container();
+			container->AddGraph('S', 0, 2, 3, -1);
+			container->AddGraph('L', 0, 2, 3, -1);
+			container->AddGraph('R', 0, 2, 3, -1);
+			Assert::AreEqual(container->Size(), 0);
+
+			container = new Container();
+			container->AddGraph('S', 4, 2, 5, 0);
+			container->AddGraph('L', 4, 2, 5, 0);
+			container->AddGraph('R', 4, 2, 5, 0);
+			Assert::AreEqual(container->Size(), 0);
 		}
 	};
 
