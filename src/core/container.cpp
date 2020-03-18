@@ -1,18 +1,16 @@
+#include "pch.h"
 #include "container.h"
 
-void Container::Add(Dot d) {
-	dots.insert(d);
+Container::Container() {
+	this->graphs = new vector<Graph*>;
+	this->dots = new set<Dot>;
 }
 
-int Container::Size() {
-	return (int)dots.size();
-}
-
-bool IsSameSymbol(double a, double b) {
+bool  Container::IsSameSymbol(double a, double b) {
 	return (a >= 0 && b >= 0) || (a <= 0 && b <= 0);
 }
 
-bool IsInRadialLimit(Dot* intersect, Radial* radial) {
+bool  Container::IsInRadialLimit(Dot* intersect, Radial* radial) {
 	Dot* end_point = radial->GetEndPoint();
 	Dot* cross_point = radial->GetCrossPoint();
 
@@ -21,7 +19,7 @@ bool IsInRadialLimit(Dot* intersect, Radial* radial) {
 
 }
 
-bool IsInSegmentLimit(Dot* intersect, Segment* segment) {
+bool  Container::IsInSegmentLimit(Dot* intersect, Segment* segment) {
 	Dot* end_point1 = segment->GetEndPoint1();
 	Dot* end_point2 = segment->GetEndPoint2();
 
@@ -31,7 +29,20 @@ bool IsInSegmentLimit(Dot* intersect, Segment* segment) {
 		&& intersect->GetY() <= max(end_point1->GetY(), end_point2->GetY());
 }
 
-void Solve(Container* container, Graph* g1, Graph* g2) {
+
+int Container::Size() {
+	return (int)dots->size();
+}
+
+vector<Graph*>* Container::Getgraphs() {
+	return graphs;
+}
+
+set<Dot>* Container::GetDots() {
+	return dots;
+}
+
+void  Container::IntersectCalculate(Graph* g1, Graph* g2) {
 	// both are line, radial or segment
 	double A1 = g1->GetA(), B1 = g1->GetB(), C1 = g1->GetC();
 	double A2 = g2->GetA(), B2 = g2->GetB(), C2 = g2->GetC();
@@ -65,6 +76,36 @@ void Solve(Container* container, Graph* g1, Graph* g2) {
 			return;
 		}
 
-		container->Add(*intersect);
+		this->AddDot(*intersect);
 	}
+}
+
+void Container::AddDot(Dot d) {
+	dots->insert(d);
+}
+
+void Container::AddGraph(char type, int x1, int y1, int x2, int y2) {
+		Graph* new_graph = NULL;
+		if (type == 'L') {
+			Dot d1(x1, y1);
+			Dot d2(x2, y2);
+			new_graph = new Line(d1, d2);
+
+		} else if (type == 'R') {
+			Dot d1(x1, y1);
+			Dot d2(x2, y2);
+			new_graph = new Radial(d1, d2);
+
+		} else if (type == 'S') {
+			Dot d1(x1, y1);
+			Dot d2(x2, y2);
+			new_graph = new Segment(d1, d2);
+		}
+
+		if (new_graph != NULL) {
+			for (Graph* graph : *graphs) {
+				IntersectCalculate(new_graph, graph);
+			}
+			graphs->push_back(new_graph);
+		}
 }

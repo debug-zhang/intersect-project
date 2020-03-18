@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "line.h"
 
 Line::Line(Dot d1, Dot d2) {

@@ -1,8 +1,10 @@
 #include <fstream>
-#include <vector>
-#include "container.h"
+#include "core/container.h"
+#define DEBUG 1
 
-#define DEBUG 0
+class _declspec(dllexport) Container;
+
+using namespace std;
 
 int main(int argc, char* argv[]) {
 	ifstream input;
@@ -23,48 +25,17 @@ int main(int argc, char* argv[]) {
 
 	int line;
 	input >> line;
-
-	Container* container = new Container;
-	vector<Graph*> graphs;
+	Container* container = new Container();
 
 	for (int i = 0; i < line; i++) {
 		char type;
-		Graph* graph1 = NULL;
 		input >> type;
-		if (type == 'L') {
-			int x1, y1, x2, y2;
-			input >> x1 >> y1 >> x2 >> y2;
-			Dot d1(x1, y1);
-			Dot d2(x2, y2);
-			graph1 = new Line(d1, d2);
+		int x1, y1, x2, y2;
+		input >> x1 >> y1 >> x2 >> y2;
 
-		} else if (type == 'R') {
-			int x1, y1, x2, y2;
-			input >> x1 >> y1 >> x2 >> y2;
-			Dot d1(x1, y1);
-			Dot d2(x2, y2);
-			graph1 = new Radial(d1, d2);
-
-		} else if (type == 'S') {
-			int x1, y1, x2, y2;
-			input >> x1 >> y1 >> x2 >> y2;
-			Dot d1(x1, y1);
-			Dot d2(x2, y2);
-			graph1 = new Segment(d1, d2);
-
-		} else if (type == 'C') {
-			// TO DO
-		}
-
-		if (graph1 != NULL) {
-			for (Graph* graph2 : graphs) {
-				Solve(container, graph1, graph2);
-			}
-			graphs.push_back(graph1);
-		}
+		container->AddGraph(type, x1, y1, x2, y2);
 	}
 
 	output << container->Size() << endl;
-	// cout << "total: " << container->Size() << endl;
 	return 0;
 }
