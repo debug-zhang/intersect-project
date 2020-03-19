@@ -1,4 +1,5 @@
 #pragma once
+#include "exception.h"
 
 class Graph {
 public:
