@@ -10,20 +10,19 @@ class _declspec(dllexport) Container;
 int main(int argc, char* argv[]) {
 	IOHandler io(argc, argv, DEBUG);
 
-	int line = io.readLine();
+	int line = io.readInt();
 
 	Container* container = new Container;
 
 	for (int i = 0; i < line; i++) {
-		char type = io.readGraphType();
-		int x1 = io.readNum();
-		int y1 = io.readNum();
-		int x2 = io.readNum();
-		int y2 = io.readNum();
+		char type = io.readChar();
+		int x1 = io.readInt();
+		int y1 = io.readInt();
+		int x2 = io.readInt();
+		int y2 = io.readInt();
 		container->AddGraph(type, x1, y1, x2, y2);
 	}
 
-	//todo: catch and handle or just eject
 	io.outputInt(container->Size());
 	return 0;
 }

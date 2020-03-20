@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "CppUnitTest.h"
-#include "../src/core/container.h"
+#include "../IntersectProject/core/container.h"
+
+class _declspec(dllexport) Container;
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -160,7 +162,6 @@ namespace UnitTest
 			container->IntersectCalculate(line, radial);
 			Assert::AreEqual(container->Size(), 1);
 		}
-		//todo: 参考IntersectCalculate()中if parallel部分的内容
 	};
 
 }

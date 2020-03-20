@@ -2,9 +2,6 @@
 #include "line.h"
 
 Line::Line(Dot d1, Dot d2) {
-	if (d1.equals(d2)) {
-		throw dot_superposition_exception();
-	}
 	A = d1.GetY() - d2.GetY();
 	B = d2.GetX() - d1.GetX();
 	C = -A * d1.GetX() - B * d1.GetY();
