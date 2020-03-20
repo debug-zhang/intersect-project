@@ -20,3 +20,5 @@ CMakeLists.txt
 /bin/*.log
 /bin/lineCross.exe.lastcodeanalysissucceeded
 *.txt
+/dllProject/Debug
+/IntersectTest/Debug
