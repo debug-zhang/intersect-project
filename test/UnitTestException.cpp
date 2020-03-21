@@ -21,9 +21,9 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace UnitTest {
 	TEST_CLASS(UnitTest) {
 public:
-	IOHandler* io = new IOHandler(0, NULL, 1);
 	std::ofstream ofstr;
 	TEST_METHOD(TestNotIntegerException) {
+		IOHandler* io = new IOHandler(0, NULL, 1);
 		OPENFILE();
 		WRITE("wordsssss");
 		auto func0 = [&] {io->readNum(); };
@@ -39,6 +39,7 @@ public:
 		CLOSEFILE();
 	}
 	TEST_METHOD(TestNotValidIntegerException) {
+		IOHandler* io = new IOHandler(0, NULL, 1);
 		OPENFILE();
 		WRITE("0");
 		auto func0 = [&] {io->readLine(); };
@@ -53,6 +54,7 @@ public:
 		Assert::IsTrue(true);
 	}
 	TEST_METHOD(TestUndefinedGraphException) {
+		IOHandler* io = new IOHandler(0, NULL, 1);
 		OPENFILE();
 		WRITE("K");
 		auto func1 = [&] {io->readGraphType(); };
@@ -65,6 +67,7 @@ public:
 		CLOSEFILE();
 	}
 	TEST_METHOD(TestOverRangeException) {
+		IOHandler* io = new IOHandler(0, NULL, 1);
 		OPENFILE();
 		WRITE("-100000");
 		auto func = [&] {io->readNum(); };
@@ -97,9 +100,9 @@ public:
 		Assert::ExpectException<infinate_intersect_exception>(func);
 	}
 	TEST_METHOD(TestFileNotExistException) {
-		// todo: how to test this?
-		// pass
-		;
+		// ×¢ÒâÉ¾³ýinput.txtÎÄ¼þ
+		auto func = [&] {IOHandler* io = new IOHandler(0, NULL, 1); };
+		Assert::ExpectException<file_not_exist_exception>(func);
 	}
 	};
 }

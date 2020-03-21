@@ -3,7 +3,10 @@
 
 IOHandler::IOHandler(int argc, char* argv[], bool DEBUG) {
 	if (DEBUG) {
-		ifstream.open("input.txt");
+		ifstream.open("input.txt", ios::in);
+		if (!ifstream) {
+			throw file_not_exist_exception();
+		}
 		ofstream.open("output.txt");
 	} else {
 		for (int arg = 0; arg < argc; arg++) {
