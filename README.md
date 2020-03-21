@@ -2,7 +2,7 @@
 
 
 
-# [2020 BUAA 软件工程]个人项目作业
+# [2020 BUAA 软件工程]结对项目作业
 
 |                                          |                                                              |
 | :--------------------------------------- | :----------------------------------------------------------- |
@@ -279,13 +279,21 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 
 
-## 5. 画出 UML 图显示计算模块部分各个实体之间的关系 
+## 5. 画出 UML 图显示计算模块部分各个实体之间的关系
+
+![ClassDiagram](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/ClassDiagram.png)
+
+- `Dot` 继承了 `pair<double, double>`
+- `Line` 继承了 `Graph`
+- `Radial` 和 `Segment` 继承了 `Line`
+- `Radial` 和 `Segment` 关联了`Dot`
+- `Container` 关联了 `Graph` 和 `Dot`
+
+------
 
 
 
 ## 6.  计算模块接口部分的性能改进
-
-
 
 
 
@@ -299,13 +307,13 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 ### 消除 Code Quality Analysis 中的所有警告
 
-![TIM截图20200309123510](.\assets\消除警告.jpg)
+![Warning](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/Warning.jpg)
 
 ### 单元测试
 
 #### 覆盖率
 
-![TIM截图20200309123510](.\assets\覆盖率.jpg)
+![Coverage](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/Coverage.jpg)
 
 #### 扩展计算交点功能
 
@@ -346,6 +354,7 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 segment = new Segment(Dot(1, 1), Dot(1, -1));
 line = new Line(Dot(2, 2), Dot(2, 0));
 radial = new Radial(Dot(3, 3), Dot(3, 4));
+
 ```
 
 - 交点与交点重合
@@ -354,6 +363,7 @@ radial = new Radial(Dot(3, 3), Dot(3, 4));
 segment = new Segment(Dot(-1, 3), Dot(2, -1));
 line = new Line(Dot(-2, 2), Dot(3, 0));
 radial = new Radial(Dot(-3, 0), Dot(4, 2));
+
 ```
 
 - 端点与端点重合
@@ -362,6 +372,7 @@ radial = new Radial(Dot(-3, 0), Dot(4, 2));
 segment = new Segment(Dot(0, 2), Dot(3, -1));
 line = new Line(Dot(4, 2), Dot(5, 0));
 radial = new Radial(Dot(0, 2), Dot(3, -1));
+
 ```
 
 - 端点与交点重合
@@ -370,6 +381,7 @@ radial = new Radial(Dot(0, 2), Dot(3, -1));
 segment = new Segment(Dot(0, 2), Dot(3, -1));
 line = new Line(Dot(0, 2), Dot(2, 2));
 radial = new Radial(Dot(0, 2), Dot(3, -1));
+
 ```
 
 #### 将扩展后的功能封装为独立模块
@@ -389,11 +401,10 @@ container->AddGraph('R', 3, 3, 3, 4);
 Assert::AreEqual(container->Size(), 0);
 
 ……
+
 ```
 
 ------
-
-
 
 
 
