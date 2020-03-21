@@ -2,18 +2,20 @@
 #include "IOHandler.h"
 
 IOHandler::IOHandler(int argc, char* argv[], bool DEBUG) {
+	ifstream = new std::ifstream();
+	ofstream = new std::ofstream();
 	if (DEBUG) {
-		ifstream.open("input.txt", ios::in);
-		if (!ifstream) {
+		ifstream->open("input.txt", ios::in);
+		if (!*ifstream) {
 			throw file_not_exist_exception();
 		}
-		ofstream.open("output.txt");
+		ofstream->open("output.txt");
 	} else {
 		for (int arg = 0; arg < argc; arg++) {
 			if ((string)argv[arg] == "-i") {
-				ifstream.open(argv[arg + 1]);
+				ifstream->open(argv[arg + 1]);
 			} else if ((string)argv[arg] == "-o") {
-				ofstream.open(argv[arg + 1]);
+				ofstream->open(argv[arg + 1]);
 			}
 		}
 	}
@@ -21,9 +23,9 @@ IOHandler::IOHandler(int argc, char* argv[], bool DEBUG) {
 
 int IOHandler::readInt() {
 	int res;
-	ifstream >> res;
-	if (ifstream.peek() != ' ' && ifstream.peek() != '\n') {
-		ifstream.clear();
+	*ifstream >> res;
+	if (ifstream->peek() != ' ' && ifstream->peek() != '\n') {
+		ifstream->clear();
 		throw not_integer_exception();
 	}
 	return res;
@@ -47,7 +49,7 @@ int IOHandler::readLine() {
 
 char IOHandler::readGraphType() {
 	char res;
-	ifstream >> res;
+	*ifstream >> res;
 	if (res != 'L' && res != 'R' && res != 'S' && res != 'C') {
 		throw undefined_graph_exception();
 	}
@@ -55,9 +57,9 @@ char IOHandler::readGraphType() {
 }
 
 void IOHandler::outputInt(const int n) {
-	ofstream << n << endl;
+	*ofstream << n << endl;
 }
 
 void IOHandler::reset() {
-	ifstream.seekg(0);
+	ifstream->seekg(0);
 }
