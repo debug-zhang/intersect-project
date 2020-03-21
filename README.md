@@ -1,4 +1,22 @@
-## 项目地址
+
+
+
+
+# [2020 BUAA 软件工程]个人项目作业
+
+|                                          |                                                              |
+| :--------------------------------------- | :----------------------------------------------------------- |
+| 项目                                     | 内容                                                         |
+| 这个作业属于哪个课程                     | [2020春北航计算机学院软件工程(罗杰 任健)](https://edu.cnblogs.com/campus/buaa/BUAA_SE_2020_LJ/) |
+| 这个作业的要求在哪里                     | [结对项目作业](https://edu.cnblogs.com/campus/buaa/BUAA_SE_2020_LJ/homework/10466) |
+| 我在这个课程的目标是                     | 系统学习软件工程相关知识，培养自己的软件开发能力与团队协作能力，接受一定的实战锻炼 |
+| 这个作业在哪个**具体方面**帮助我实现目标 | 练习结对项目开发                                             |
+
+
+
+
+
+## 1. 教学班级和**可克隆**的 Github 项目地址
 
 - 教学班级：006
 
@@ -15,51 +33,74 @@
   ├── src
   │   ├── main.cpp
   │   └── core
+  │   │   ├── container.h
+  │   │   ├── dot.h
+  │   │   ├── exception.h
+  │   │   ├── framework.h
+  │   │   ├── graph.h
+  │   │   ├── IOHandler.h
+  │   │   ├── line.h
+  │   │   ├── pch.h
+  │   │   ├── radial.h
+  │   │   ├── segment.h
+  │   │   ├── container.cpp
+  │   │   ├── dllmain.cpp
+  │   │   ├── dot.cpp
+  │   │   ├── IOHandler.cpp
+  │   │   ├── line.cpp
+  │   │   ├── pch.cpp
+  │   │   ├── radial.cpp
+  │   │   └── segment.cpp
   └── test
       ├── pch.h
       ├── pch.cpp
-      └── UnitTest.cpp
+      ├── UnitTestIntersect.cpp
+      ├── UnitTestInterface.cpp
+      └── UnitTestException.cpp
   ```
 
 ------
 
 
 
-## 软件需求
+## 2.  在下述 PSP 表格记录下估计将在程序的各个模块的开发上耗费的时间
 
-实现一个能求解简单几何形状之间交点的软件。 
-
-### 扩展交点计算
-
-> 给定 N 个几何对象，询问平面中有多少个点在**至少 2 个**给定的几何对象上。**题目输入保证答案只有有限个。**
->
-> 需要支持的几何对象为：直线，射线（新增需求），线段（新增需求），圆（附加题）。
-
-### 将扩展后的功能封装为独立模块
-
-> 以需要支持接入 GUI 模块为前提，设计求解几何对象交点的接口集合。
-
-### 支持异常处理
-
-> 区别合法输入和非法输入，同时对非法输入进行一定的提示以帮助用户改正。 需要考虑的输入为以大小写字母，数字，空格，`-`，`\n` 组成的文本。 
->
-> 设计好异常的种类与错误提示，实现抛出异常的功能。
+| PSP2.1                                  | Personal Software Process Stages        | 预估耗时（分钟） | 实际耗时（分钟） |
+| :-------------------------------------- | :-------------------------------------- | :--------------- | :--------------- |
+| Planning                                | 计划                                    |                  |                  |
+| · Estimate                              | · 估计这个任务需要多少时间              |                  |                  |
+| Development                             | 开发                                    |                  |                  |
+| · Analysis                              | · 需求分析 (包括学习新技术)             |                  |                  |
+| · Design Spec                           | · 生成设计文档                          |                  |                  |
+| · Design Review                         | · 设计复审 (和同事审核设计文档)         |                  |                  |
+| · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) |                  |                  |
+| · Design                                | · 具体设计                              |                  |                  |
+| · Coding                                | · 具体编码                              |                  |                  |
+| · Code Review                           | · 代码复审                              |                  |                  |
+| · Test                                  | · 测试（自我测试，修改代码，提交修改）  |                  |                  |
+| Reporting                               | 报告                                    |                  |                  |
+| · Test Report                           | · 测试报告                              |                  |                  |
+| · Size Measurement                      | · 计算工作量                            |                  |                  |
+| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          |                  |                  |
+|                                         | 合计                                    |                  |                  |
 
 ------
 
-### 添加界面模块
 
-> 支持从文件导入几何对象的描述。
->
-> 支持几何对象的添加、删除。
->
-> 支持绘制现有几何对象。
->
-> 支持求解现有几何对象交点并绘制。
 
-## 解题思路
+## 3. 说明在结对编程中是如何利用教科书和其它资料中的方法对接口进行设计的 
 
-### 几何形状表示方法
+
+
+------
+
+
+
+## 4. 计算模块接口的设计与实现过程。说明你的算法的关键（不必列出源代码），以及独到之处
+
+### 解题思路
+
+#### 几何形状表示方法
 
 根据题目所给定的信息，直线、射线和线段均由线上两点表示。
 
@@ -79,7 +120,7 @@ $$ Ax+By+C=0 $$
 
 $$A_1B_2=A_2B_1$$
 
-### 交点计算
+#### 交点计算
 
 在用直线的一般式方程来描述时，两直线交点坐标：
 
@@ -89,47 +130,24 @@ $$(\frac{B_1C_2-B_2C_1}{A_1B_2-A_2B_1},\ \frac{A_2C_1-A_1C_2}{A_1B_2-A_2B_1})$$
 
 如果两形状中存在线段，则判断线段的两端点与交点的位置关系，交点是否在两端点之间。
 
-### 判断方法
+#### 判断方法
 
 目前没有想到好的判断方法，所使用的就是暴力枚举，每加入一个新几何形状，将其与集合中每一个元素求交点。
 
-### 复杂度
+#### 复杂度
 
 因为是暴力枚举，复杂度仅能达到 $O(n^2)$。
 
-------
+### 设计实现过程
 
-
-
-## 设计实现过程
-
-本设计包含一个结构体和两个类。
-
-### 交点类 Dot
+#### 交点类 Dot
 
 交点类通过继承 `pair<double, double> ` 实现，操作比较简单。
-
-```c++
-class Dot : public pair<double, double> {
-public:
-	Dot(double, double);
-	Dot(const Dot&);
-
-	double GetX();
-
-	double GetY();
-
-	bool equals(Dot b);
-};
-
-```
 
 为了判断重复交点，需要重写 `equals` 函数。
 
 ```c++
-bool Dot::equals(Dot b) {
-	return DoubleEquals(first, b.first) && DoubleEquals(second, b.second);
-}
+class Dot : public pair<double, double>;
 ```
 
 其中考虑到浮点数的精度问题，定义了一个宏函数 `DoubleEquals`。
@@ -138,9 +156,9 @@ bool Dot::equals(Dot b) {
 #define DoubleEquals(a, b) (fabs((a) - (b)) < 1e-10)
 ```
 
-### 图形类
+#### 图形类
 
-#### Graph
+##### Graph
 
 所有几何形状的共同父类，由于统一用直线的一般式表示，定义获取三个参数的虚函数。
 
@@ -148,14 +166,12 @@ bool Dot::equals(Dot b) {
 class Graph {
 public:
 	virtual double GetA() = 0;
-
 	virtual double GetB() = 0;
-
 	virtual double GetC() = 0;
 };
 ```
 
-#### Line
+##### Line
 
 通过继承 `Graph` 实现。
 
@@ -166,7 +182,7 @@ private:
 };
 ```
 
-#### Radial
+##### Radial
 
 通过继承 `Line` 实现。
 
@@ -178,7 +194,7 @@ private:
 };
 ```
 
-#### Segment
+##### Segment
 
 通过继承 `Line` 实现。
 
@@ -190,7 +206,7 @@ private:
 };
 ```
 
-### 交点容器类 Container
+#### 交点容器类 Container
 
 用于存储图形，存储并除去重合的交点。
 
@@ -202,7 +218,7 @@ private:
 };
 ```
 
-### 计算
+#### 计算
 
 两直线平行直接使用公式 $A_1B_2=A_2B_1$ 判断。
 
@@ -222,9 +238,9 @@ double y = (A2 * C1 - A1 * C2) / denominator;
 Dot* intersect = new Dot(x, y);
 ```
 
-### 判断
+#### 判断
 
-#### 判断交点是否在射线上
+##### 判断交点是否在射线上
 
 交点是否在射线上，其实就是交点是否在端点沿射线方向的一侧。
 
@@ -235,7 +251,7 @@ return IsSameSymbol((cross_point->GetX() - end_point->GetX()), (intersect->GetX(
 		&& IsSameSymbol((cross_point->GetY() - end_point->GetY()), (intersect->GetY() - end_point->GetY()));
 ```
 
-#### 判断交点是否在线段上
+##### 判断交点是否在线段上
 
 交点是否在线段上就非常简单了，暴力判断交点的横纵坐标是否在线段两端点的横纵坐标范围内。
 
@@ -246,7 +262,7 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 		&& intersect->GetY() <= max(end_point1->GetY(), end_point2->GetY());
 ```
 
-### 封装为独立模块
+#### 封装为独立模块
 
 封装后只暴露 $Container$ 类，设计以下接口：
 
@@ -263,17 +279,21 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 
 
-## 改进程序性能
-
-由于平行公式 $A_1B_2=A_2B_1$ 和交点计算公式 $(\frac{B_1C_2-B_2C_1}{A_1B_2-A_2B_1},\ \frac{A_2C_1-A_1C_2}{A_1B_2-A_2B_1})$ 都需要  $A_1B_2-A_2B_1$，直接存储起来可以减少乘法计算。
-
-```c++
-double denominator = A1 * B2 - A2 * B1;
-```
-
-------
+## 5. 画出 UML 图显示计算模块部分各个实体之间的关系 
 
 
+
+## 6.  计算模块接口部分的性能改进
+
+
+
+
+
+## 7. Design by Contract，Code Contract
+
+
+
+## 8. 计算模块部分单元测试展示
 
 ## 单元测试
 
@@ -375,25 +395,46 @@ Assert::AreEqual(container->Size(), 0);
 
 
 
-## PSP 2.1
+
+
+## 9. 计算模块部分异常处理说明
+
+
+
+## 10. 界面模块的详细设计过程
+
+
+
+## 11. 界面模块与计算模块的对接
+
+
+
+## 12. 结对的过程
+
+
+
+## 13. 说明结对编程的优点和缺点，同时描述结对的每一个人的优点和缺点在哪里
+
+
+
+## 14. 实现完程序之后，在PSP表格记录下你在程序的各个模块上实际花费的时间
 
 | PSP2.1                                  | Personal Software Process Stages        | 预估耗时（分钟） | 实际耗时（分钟） |
 | :-------------------------------------- | :-------------------------------------- | :--------------- | :--------------- |
 | Planning                                | 计划                                    |                  |                  |
-| · Estimate                              | · 估计这个任务需要多少时间              | 10               | 10               |
+| · Estimate                              | · 估计这个任务需要多少时间              |                  |                  |
 | Development                             | 开发                                    |                  |                  |
-| · Analysis                              | · 需求分析 (包括学习新技术)             | 30               | 60               |
-| · Design Spec                           | · 生成设计文档                          | 30               | 30               |
-| · Design Review                         | · 设计复审 (和同事审核设计文档)         | 0                | 0                |
-| · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) | 10               | 10               |
-| · Design                                | · 具体设计                              | 30               | 60               |
-| · Coding                                | · 具体编码                              | 60               | 90               |
-| · Code Review                           | · 代码复审                              | 60               | 60               |
-| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 120              | 120              |
+| · Analysis                              | · 需求分析 (包括学习新技术)             |                  |                  |
+| · Design Spec                           | · 生成设计文档                          |                  |                  |
+| · Design Review                         | · 设计复审 (和同事审核设计文档)         |                  |                  |
+| · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) |                  |                  |
+| · Design                                | · 具体设计                              |                  |                  |
+| · Coding                                | · 具体编码                              |                  |                  |
+| · Code Review                           | · 代码复审                              |                  |                  |
+| · Test                                  | · 测试（自我测试，修改代码，提交修改）  |                  |                  |
 | Reporting                               | 报告                                    |                  |                  |
-| · Test Report                           | · 测试报告                              | 20               | 20               |
-| · Size Measurement                      | · 计算工作量                            | 10               | 10               |
-| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 30               | 40               |
-|                                         | 合计                                    | 400              | 510              |
-
+| · Test Report                           | · 测试报告                              |                  |                  |
+| · Size Measurement                      | · 计算工作量                            |                  |                  |
+| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          |                  |                  |
+|                                         | 合计                                    |                  |                  |
 
