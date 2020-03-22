@@ -11,7 +11,5 @@ public:
 	Dot* GetEndPoint1();
 
 	Dot* GetEndPoint2();
-
-	bool equals(Graph* graph);
 };
 

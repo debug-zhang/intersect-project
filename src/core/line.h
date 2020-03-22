@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "dot.h"
 #include "graph.h"
 
@@ -14,6 +15,10 @@ public:
 
 	inline double GetC() override;
 
-	bool equals(Graph* graph);
+	inline string ToString() override;
+
+	bool equals(string to_string) override;
 };
+
+int DoubleToInt(double d);
 

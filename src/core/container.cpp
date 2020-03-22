@@ -258,31 +258,16 @@ void Container::AddGraph(char type, int x1, int y1, int x2, int y2) {
 
 Graph* Container::DeleteGraph(char type, int x1, int y1, int x2, int y2) {
 	Graph* delete_graph = NULL;
-	if (type == 'L') {
-		Dot d1(x1, y1);
-		Dot d2(x2, y2);
-		delete_graph = new Line(d1, d2);
+	string graph_string = type + " " + to_string(x1) + " " + to_string(y1) + " " 
+		+ to_string(x2) + " " + to_string(y2);
 
-	} else if (type == 'R') {
-		Dot d1(x1, y1);
-		Dot d2(x2, y2);
-		delete_graph = new Radial(d1, d2);
-
-	} else if (type == 'S') {
-		Dot d1(x1, y1);
-		Dot d2(x2, y2);
-		delete_graph = new Segment(d1, d2);
-	}
-
-	string class_type = typeid(*delete_graph).name();
-	if (delete_graph != NULL) {
-		for (int i = 0; i < graphs->size(); i++) {
-			if (class_type == typeid(*graphs->at(i)).name()
-				&& graphs->at(i)->equals(delete_graph)) {
-				graphs->erase(graphs->begin() + i);
-				return delete_graph;
-			}
+	for (int i = 0; i < graphs->size(); i++) {
+		if (graphs->at(i)->equals(graph_string)) {
+			delete_graph = graphs->at(i);
+			graphs->erase(graphs->begin() + i);
+			return delete_graph;
 		}
 	}
-	return NULL;
+
+	throw graph_not_exist();
 }

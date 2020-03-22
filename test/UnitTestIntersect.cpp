@@ -60,6 +60,13 @@ namespace UnitTest
 			Line lineSlant1(d1, d2);
 			Line lineSlant2(d2, d3);
 
+			Assert::AreEqual(DoubleToInt(0.00000001), 0);
+			Assert::AreEqual(DoubleToInt(-0.00000001), 0);
+			Assert::AreEqual(DoubleToInt(5.99999999), 6);
+			Assert::AreEqual(DoubleToInt(-5.99999999), -6);
+			Assert::AreEqual(DoubleToInt(3.111111111), 3);
+			Assert::AreEqual(DoubleToInt(-3.111111111), -3);
+
 			Assert::AreEqual(lineVertical.GetC() / lineVertical.GetA(), -6744.0);
 			Assert::AreEqual(lineVertical.GetB(), 0.0);
 			Assert::AreEqual(lineLevel.GetA(), 0.0);

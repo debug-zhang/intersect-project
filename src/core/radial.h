@@ -11,7 +11,5 @@ public:
 	Dot* GetEndPoint();
 
 	Dot* GetCrossPoint();
-
-	bool equals(Graph* graph);
 };
 

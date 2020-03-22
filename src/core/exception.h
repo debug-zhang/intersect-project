@@ -52,4 +52,10 @@ struct file_not_exist_exception :public std::exception {
 	}
 };
 
+struct graph_not_exist :public std::exception {
+	const char* what() const throw () {
+		return "the graph does not exist";
+	}
+};
+
 #endif // FILE_EXCEPTION
