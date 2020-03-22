@@ -21,3 +21,9 @@ inline double Line::GetB() {
 inline double Line::GetC() {
 	return C;
 }
+
+bool Line::equals(Graph* graph) {
+	return DoubleEquals(this->A, ((Line*)graph)->A)
+		&& DoubleEquals(this->B, ((Line*)graph)->B)
+		&& DoubleEquals(this->C, ((Line*)graph)->C);
+}

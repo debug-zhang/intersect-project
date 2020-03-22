@@ -36,7 +36,7 @@ public:
 	returns: a vector contains all graphs
 	exceptions:
 	*/
-	vector<Graph*>* Getgraphs();
+	vector<Graph*>* GetGraphs();
 
 	/*
 	params:
@@ -70,5 +70,17 @@ public:
 	returns:
 	exceptions:
 	*/
-	void AddGraph(char type,int x1, int y1, int x2, int y2);
+	void AddGraph(char type, int x1, int y1, int x2, int y2);
+
+	/*
+	delete a graph(Line, Radial or Segment) defined by ((x1, y1), (x2, y2))
+	params: type(char) - which must in [L, R, S, C]
+				  x1(int) - dot1's x value
+				  y1(int) - dot1's y value
+				  x2(int) - dot2's x value
+				  y2(int) - dot2's y value
+	returns: graph
+	exceptions:
+	*/
+	Graph* DeleteGraph(char type, int x1, int y1, int x2, int y2);
 };

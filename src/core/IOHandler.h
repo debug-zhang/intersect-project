@@ -5,8 +5,8 @@ using namespace std;
 
 class _declspec(dllexport) IOHandler {
 private:
-	ifstream *ifstream;
-	ofstream *ofstream;
+	ifstream ifstream;
+	ofstream ofstream;
 
 	/*
 	just read an integer

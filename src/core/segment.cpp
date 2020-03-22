@@ -16,3 +16,9 @@ Dot* Segment::GetEndPoint1() {
 Dot* Segment::GetEndPoint2() {
 	return end_point2;
 }
+
+bool Segment::equals(Graph* graph) {
+	return this->Line::equals(graph)
+		&& this->end_point1->equals(*((Segment*)graph)->end_point1)
+		&& this->end_point2->equals(*((Segment*)graph)->end_point2);
+}

@@ -13,5 +13,7 @@ public:
 	inline double GetB() override;
 
 	inline double GetC() override;
+
+	bool equals(Graph* graph);
 };
 

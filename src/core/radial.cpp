@@ -16,3 +16,9 @@ Dot* Radial::GetEndPoint() {
 Dot* Radial::GetCrossPoint() {
 	return cross_point;
 }
+
+bool Radial::equals(Graph* graph) {
+	return this->Line::equals(graph)
+		&& this->cross_point->equals(*((Radial*)graph)->cross_point)
+		&& this->end_point->equals(*((Radial*)graph)->end_point);
+}

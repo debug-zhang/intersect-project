@@ -34,7 +34,7 @@ int Container::Size() {
 	return (int)dots->size();
 }
 
-vector<Graph*>* Container::Getgraphs() {
+vector<Graph*>* Container::GetGraphs() {
 	return graphs;
 }
 
@@ -225,6 +225,7 @@ void  Container::IntersectCalculate(Graph* g1, Graph* g2) {
 		}
 	}
 }
+
 void Container::AddDot(Dot d) {
 	dots->insert(d);
 }
@@ -253,4 +254,35 @@ void Container::AddGraph(char type, int x1, int y1, int x2, int y2) {
 		}
 		graphs->push_back(new_graph);
 	}
+}
+
+Graph* Container::DeleteGraph(char type, int x1, int y1, int x2, int y2) {
+	Graph* delete_graph = NULL;
+	if (type == 'L') {
+		Dot d1(x1, y1);
+		Dot d2(x2, y2);
+		delete_graph = new Line(d1, d2);
+
+	} else if (type == 'R') {
+		Dot d1(x1, y1);
+		Dot d2(x2, y2);
+		delete_graph = new Radial(d1, d2);
+
+	} else if (type == 'S') {
+		Dot d1(x1, y1);
+		Dot d2(x2, y2);
+		delete_graph = new Segment(d1, d2);
+	}
+
+	string class_type = typeid(*delete_graph).name();
+	if (delete_graph != NULL) {
+		for (int i = 0; i < graphs->size(); i++) {
+			if (class_type == typeid(*graphs->at(i)).name()
+				&& graphs->at(i)->equals(delete_graph)) {
+				graphs->erase(graphs->begin() + i);
+				return delete_graph;
+			}
+		}
+	}
+	return NULL;
 }
