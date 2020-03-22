@@ -1,7 +1,7 @@
 #pragma once
 #include "exception.h"
 
-class Graph {
+class _declspec(dllexport) Graph {
 public:
 	char type = 0;
 	int x1 = 0;

@@ -43,7 +43,7 @@ public:
 	returns: a set contains all dots
 	exceptions:
 	*/
-	set<Dot>* GetDots();
+	set<pair<double,double>>* GetDots();
 
 	/*
 	params:*g1(Graph), *g2(Graph)

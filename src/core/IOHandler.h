@@ -17,7 +17,7 @@ private:
 	int readInt();
 
 public:
-	IOHandler(int argc, char* argv[], bool DEBUG);
+	IOHandler(string readFile, string writeFile);
 
 	/*
 	read an integer, ensure in range(-100000, 100000)

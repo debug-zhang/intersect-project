@@ -1,24 +1,14 @@
 #include "pch.h"
 #include "IOHandler.h"
 
-IOHandler::IOHandler(int argc, char* argv[], bool DEBUG) {
+IOHandler::IOHandler(string readFile,string writeFile) {
 	ifstream = new std::ifstream();
 	ofstream = new std::ofstream();
-	if (DEBUG) {
-		ifstream->open("input.txt", ios::in);
+		ifstream->open(readFile, ios::in);
 		if (!*ifstream) {
 			throw file_not_exist_exception();
 		}
-		ofstream->open("output.txt");
-	} else {
-		for (int arg = 0; arg < argc; arg++) {
-			if ((string)argv[arg] == "-i") {
-				ifstream->open(argv[arg + 1]);
-			} else if ((string)argv[arg] == "-o") {
-				ofstream->open(argv[arg + 1]);
-			}
-		}
-	}
+		ofstream->open(writeFile);
 }
 
 int IOHandler::readInt() {

@@ -33,13 +33,17 @@ bool  Container::IsInSegmentLimit(Dot* intersect, Segment* segment) {
 int Container::Size() {
 	return (int)dots->size();
 }
-
 vector<Graph*>* Container::GetGraphs() {
 	return graphs;
 }
 
-set<Dot>* Container::GetDots() {
-	return dots;
+set<pair<double,double>>* Container::GetDots() {
+	set<pair<double, double>>* res = new set<pair<double, double>>;
+	for (Dot d : *dots) {
+		pair<double, double> pair(d.GetX(),d.GetY());
+		res->insert(pair);
+	}
+	return res;
 }
 
 void  Container::IntersectCalculate(Graph* g1, Graph* g2) {
@@ -258,9 +262,9 @@ void Container::AddGraph(char type, int x1, int y1, int x2, int y2) {
 
 Graph* Container::DeleteGraph(char type, int x1, int y1, int x2, int y2) {
 	Graph* delete_graph = NULL;
-	string graph_string = type + " " + to_string(x1) + " " + to_string(y1) + " " 
+	string graph_string = string(1, type) + " " + to_string(x1) + " " + to_string(y1) + " "
 		+ to_string(x2) + " " + to_string(y2);
-
+	
 	for (int i = 0; i < graphs->size(); i++) {
 		if (graphs->at(i)->equals(graph_string)) {
 			delete_graph = graphs->at(i);

@@ -30,7 +30,7 @@ inline double Line::GetC() {
 }
 
 inline string Line::ToString() {
-	return type + " " + to_string(x1) + " " + to_string(y1) + " " + to_string(x2) + " " + to_string(y2);
+	return string(1, type) + " " + to_string(x1) + " " + to_string(y1) + " " + to_string(x2) + " " + to_string(y2);
 }
 
 bool Line::equals(string to_string) {

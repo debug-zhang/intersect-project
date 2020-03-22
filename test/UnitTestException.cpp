@@ -23,7 +23,7 @@ namespace UnitTest {
 public:
 	std::ofstream ofstr;
 	TEST_METHOD(TestNotIntegerException) {
-		IOHandler* io = new IOHandler(0, NULL, 1);
+		IOHandler* io = new IOHandler("input.txt","output.txt");
 		OPENFILE();
 		WRITE("wordsssss");
 		auto func0 = [&] {io->readNum(); };
@@ -39,7 +39,7 @@ public:
 		CLOSEFILE();
 	}
 	TEST_METHOD(TestNotValidIntegerException) {
-		IOHandler* io = new IOHandler(0, NULL, 1);
+		IOHandler* io = new IOHandler("input.txt", "output.txt");
 		OPENFILE();
 		WRITE("0");
 		auto func0 = [&] {io->readLine(); };
@@ -54,7 +54,7 @@ public:
 		Assert::IsTrue(true);
 	}
 	TEST_METHOD(TestUndefinedGraphException) {
-		IOHandler* io = new IOHandler(0, NULL, 1);
+		IOHandler* io = new IOHandler("input.txt", "output.txt");
 		OPENFILE();
 		WRITE("K");
 		auto func1 = [&] {io->readGraphType(); };
@@ -67,7 +67,7 @@ public:
 		CLOSEFILE();
 	}
 	TEST_METHOD(TestOverRangeException) {
-		IOHandler* io = new IOHandler(0, NULL, 1);
+		IOHandler* io = new IOHandler("input.txt", "output.txt");
 		OPENFILE();
 		WRITE("-100000");
 		auto func = [&] {io->readNum(); };
@@ -101,7 +101,7 @@ public:
 	}
 	TEST_METHOD(TestFileNotExistException) {
 		// ×¢ÒâÉ¾³ýinput.txtÎÄ¼þ
-		auto func = [&] {IOHandler* io = new IOHandler(0, NULL, 1); };
+		auto func = [&] {		IOHandler* io = new IOHandler("input.txt", "output.txt");};
 		Assert::ExpectException<file_not_exist_exception>(func);
 	}
 	};
