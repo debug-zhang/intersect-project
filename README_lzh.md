@@ -19,7 +19,7 @@
   IntersectProject/
   ├── bin
   │   ├── intersect.exe
-  │   └── core.dll
+  │   └── dllProject.dll
   ├── README.md
   ├── src
   │   ├── main.cpp
@@ -61,19 +61,19 @@
 | Planning                                | 计划                                    |                  |                  |
 | · Estimate                              | · 估计这个任务需要多少时间              | 10               |                  |
 | Development                             | 开发                                    |                  |                  |
-| · Analysis                              | · 需求分析 (包括学习新技术)             | 300              |                  |
-| · Design Spec                           | · 生成设计文档                          | 3                |                  |
+| · Analysis                              | · 需求分析 (包括学习新技术)             | 500              |                  |
+| · Design Spec                           | · 生成设计文档                          | 15               |                  |
 | · Design Review                         | · 设计复审 (和同事审核设计文档)         | 10               |                  |
 | · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) | 5                |                  |
-| · Design                                | · 具体设计                              | 10               |                  |
-| · Coding                                | · 具体编码                              | 20               |                  |
+| · Design                                | · 具体设计                              | 15               |                  |
+| · Coding                                | · 具体编码                              | 140              |                  |
 | · Code Review                           | · 代码复审                              | 15               |                  |
-| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 60               |                  |
+| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 120              |                  |
 | Reporting                               | 报告                                    |                  |                  |
-| · Test Report                           | · 测试报告                              | 10               |                  |
+| · Test Report                           | · 测试报告                              | 30               |                  |
 | · Size Measurement                      | · 计算工作量                            | 5                |                  |
 | · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 5                |                  |
-|                                         | 合计                                    | 310              |                  |
+|                                         | 合计                                    | 920              |                  |
 
 
 
@@ -87,7 +87,7 @@
 
 #### 接口设计
 
-Container只暴露`Size()`，`Getgraphs()`，`GetDots()`和`IntersectCalculate()`四个接口。
+Container只暴露`Size()`，`Getgraphs()`，`GetDots()`，`AddGraph()`和`DeleteGraph()`五个接口。分别用于取得交点个数、取得几何图形、取得交点、添加几何图形和删除几何图形。足以涵盖包括UI在内所有要使用信息。
 
 IOHandler类只暴露四个接口`readNum()​`，`readLine()`，`readGraphType()`和`outputInt()`，分别用于读入一个范围在$(-100000,100000)$的整数、读入几何对象数量，读入一个表示几何对象类型的字符和输出一个整数。四个接口涵盖了IO方面所有的功能。
 
@@ -101,7 +101,7 @@ IOHandler类只暴露四个接口`readNum()​`，`readLine()`，`readGraphType(
 
 ### 5.UML
 
-由于计算的核心模块并非本人所写，故引用合作伙伴张xz同学的[博客](https://github.com/blackbird52/IntersectProject/blob/master/assets/ClassDiagram.png)
+由于计算的核心模块并非本人所写，故引用合作伙伴张xz同学的[素材](https://github.com/blackbird52/IntersectProject/blob/master/assets/ClassDiagram.png)
 
 ![](./assets/ClassDiagram.png)
 
@@ -119,6 +119,7 @@ IOHandler类只暴露四个接口`readNum()​`，`readLine()`，`readGraphType(
 但是对于每个暴露出来的接口，我都写了接口文档，说明了每个模块的作用、参数、返回值和期望的异常，也许在一个侧面反映了契约式设计的一些特点。
 
 ```c++
+//IOHandler
 /**
 * read an integer, ensure in range(-100000, 100000)
 * params: None
@@ -133,7 +134,7 @@ int readNum();
 * params: None
 * returns: an integer in range[1,inf) from ifstream
 * exceptions: not_integer_exception - if is not an integer(decimal, char, ect)
-*			 not_valid_integer_exception - if not in range[1, inf)
+*			  not_valid_integer_exception - if not in range[1, inf)
 **/
 int readLine();
 
@@ -158,22 +159,24 @@ void outputInt(const int n);
 
 ### 13.结对编程感想
 
-自我感觉，在这次的结对过程中，自己更像一个领航员。在这次的作业中，核心功能的设计和编码并不是我完成的，自己只是写了IO部分、异常部分和修复了核心功能的一些bug；但是在项目规范的设计和博客的分工方面，一直都是我用了“断言”的方式来制定规范的，所以感觉自己更像一个领航员。
+自我感觉，在编写核心模块中，自己更像一个领航员。在这次的作业中，核心功能的设计和编码并不是我完成的，自己只是写了IO部分、异常部分和修复了核心功能的一些bug；但是在项目规范的设计和博客的分工方面，一直都是我用了“断言”的方式来制定规范的，所以感觉自己更像一个领航员。
 
-但是我也反思，自己这两个星期以来，对于任务进度的把控并不是很好，没有明确任务每一个进度的规划时间，而是做到哪算到哪；第二是，对于结对伙伴不够信任，常常会心理担心代码中是不是有bug，会被查出然后扣分。
+在编写UI模块中，自己是一个实践者。从零学习、搭建Qt环境、设计UI、接入核心计算模块，都是我一个人全权负责，伙伴则修改模块接口的不足和缺陷。
+
+但是我也反思，自己这两个星期以来，对于任务进度的把控并不是很好，没有明确任务每一个进度的规划时间，而是做到哪算到哪，导致任务提交前十分匆忙；第二是，对于结对伙伴不够信任，常常会心理担心代码中是不是有bug，会被查出然后扣分。
 
 在这次的体验中，我感受到的结对编程的一些优缺点：
 
 优点：
 
 + 代码复审的机制能够帮助双方少写bug，提供更好的代码质量和测试质量
-+ 双人合作的模式，对于双方都更有动力，更加富有责任感，愿意把自己的时期早早的做完
++ 双人合作的模式，对于双方都更有动力，更加富有责任感，愿意把自己的事情尽快做完不拖累进度
 
 缺点
 
 + 额外多了很多沟通的成本，包括规范的设计和遇到一个问题之后双方如何承担责任并修复
-+ 系统环境一致性问题，由于双方VS项目的目录结构不同，开发初期双方在文件路径上出现了分歧
-+ 工作时间匹配问题，由于作息重合时间少，故屏幕共享直播编程的机会不多，大部分交流通过微信或者pull request或者issue等异步的模式解决
++ 系统环境一致性问题，由于双方项目的目录结构不同，开发初期双方在文件路径上出现了分歧
++ 工作时间匹配问题，由于地域时差和作息重合时间少，故屏幕共享直播编程的机会并不会特别多，很多交流是通过微信、pull request或者issue等异步的方式解决
 
 
 
@@ -184,17 +187,20 @@ void outputInt(const int n);
 | Planning                                | 计划                                    |                  |                         |
 | · Estimate                              | · 估计这个任务需要多少时间              | 10               | 5                       |
 | Development                             | 开发                                    |                  |                         |
-| · Analysis                              | · 需求分析 (包括学习新技术)             | 300              | 500（包括搭建、学习Qt） |
+| · Analysis                              | · 需求分析 (包括学习新技术)             | 500              | 660（包括搭建、学习Qt） |
 | · Design Spec                           | · 生成设计文档                          | 15               | 20                      |
 | · Design Review                         | · 设计复审 (和同事审核设计文档)         | 10               | 5                       |
 | · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) | 5                | 3                       |
-| · Design                                | · 具体设计                              | 10               | 5                       |
-| · Coding                                | · 具体编码                              | 20               | 15                      |
+| · Design                                | · 具体设计                              | 15               | 5                       |
+| · Coding                                | · 具体编码                              | 140              | 195                     |
 | · Code Review                           | · 代码复审                              | 15               | 10                      |
-| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 60               | 240                     |
+| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 120              | 240                     |
 | Reporting                               | 报告                                    |                  |                         |
-| · Test Report                           | · 测试报告                              | 10               | 15                      |
+| · Test Report                           | · 测试报告                              | 30               | 15                      |
 | · Size Measurement                      | · 计算工作量                            | 5                | 2                       |
 | · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 5                | 5                       |
-|                                         | 合计                                    | 310              | 825                     |
+|                                         | 合计                                    | 920              | 1165                    |
 
+时间相差了245分钟，将近4个小时。我回忆了一下，主要是这几个方面占用了太多的时间：1) Qt的安装，因为依赖没有安装导致四处碰壁 2) Qt不能使用vs导出的.dll库，摸索许久 3) 核心模块的设计并没有对UI方面做好足够的支持，发现了一些接口的不足和缺陷 4) Qt绘制曲线图有一定的难度，如果使用plot相关的插件，相信效果会好很多。
+
+这次结对过程，本人就是很吃了设计上的亏，在具体编码过程中，遇到了不少意料之外的问题，急急忙忙去寻求解决方案。因此，我得到的教训最重要的就是，必须事先在设计阶段就将大部分的问题发现并解决。这个过程需要合作伙伴一起头脑风暴，利用白板等工具画出依赖关系、业务流程等，然后试图发现其中的问题，并且对于已经发现的问题找到可能的解决方案，未雨绸缪。

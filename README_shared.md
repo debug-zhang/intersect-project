@@ -169,6 +169,10 @@ Dot* intersect = new Dot(x, y);
 }
 ```
 
+即出现如下情况
+
+![](./assets/line.png)
+
 
 
 #### 判断
@@ -200,13 +204,13 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 封装后暴露 $Container$ 类，设计以下接口：
 
 - 项目核心功能交点计算
-  - `void AddGraph(char type,int x1, int y1, int x2, int y2);;`
-  - `void IntersectCalculate(Graph* g1, Graph* g2)`
+  - `void AddGraph(char type,int x1, int y1, int x2, int y2)`
+  - `void DeleteGraph(char type, int x1, int y1, int x2, int y2)`
 - 获取交点个数，完成题目要求
   - `int Size()`
 - 获取图形集合和交点集合，为 $UI$ 设计做准备
   - `vector<Graph*>* Getgraphs()`
-  - `set<Dot>* GetDots()`
+  - `set<pair<double,double>>* GetDots()`
 
 封装后暴露 $IOHandler$ 类，设计以下接口：
 
@@ -228,11 +232,11 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 ![](D:/shared_codes/IntersectProject/assets/time_cost.png)
 
-其中，我们关注到，读写文件也占用了很长时间，这其实和我的测试方法有一定的关系：反复读写同一个文件，无形中增加了很多的IO时间。这是测试方法的弊端，代码这一部分使用了`fstream`，其优化空间也不大。
-
-但耗时最长的单体方法还是为`AddGraph`，但是考虑到其中很大部分是因为调用了`IntersectCalculate`方法，计算两个几何对象之间的交点。
+其中，我们关注到，耗时最长的单体方法是`AddGraph`，但是考虑到其中很大部分是因为调用了`IntersectCalculate`方法，计算两个几何对象之间的交点。所以分析该方法：
 
 这个函数有三个地方耗时可能比较多：一个是计算交点的浮点数计算模块，涉及大量的浮点计算；另一个是对于很多特殊情况的判断，尤其是需要考虑到线段和射线共线的几种情况，做了非常多的if-else判断，在运行时会增加很多跳转；第三个是因为AddDot方法使用了内置的set容器，使用红黑树作为存储结构，在添加一个点时，需要判断多次的$<$关系，其时间复杂度为$O(logn)$。
+
+可能的解决办法为使用`<unorder_map>`来存储交点，将时间复杂度将为`O(1)`。
 
 
 
@@ -241,6 +245,8 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 ## 单元测试
 
 ### 消除 Code Quality Analysis 中的所有警告
+
+此处我们也学习到了很多细节知识，比如在封装dll时使用的fstream和vector需要写成指针，以防止不同平台上模板不同导致的问题。
 
 ![Warning](D:/shared_codes/IntersectProject/assets/Warning.jpg)
 
@@ -289,8 +295,6 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 segment = new Segment(Dot(1, 1), Dot(1, -1));
 line = new Line(Dot(2, 2), Dot(2, 0));
 radial = new Radial(Dot(3, 3), Dot(3, 4));
-
-
 ```
 
 - 交点与交点重合
@@ -299,8 +303,6 @@ radial = new Radial(Dot(3, 3), Dot(3, 4));
 segment = new Segment(Dot(-1, 3), Dot(2, -1));
 line = new Line(Dot(-2, 2), Dot(3, 0));
 radial = new Radial(Dot(-3, 0), Dot(4, 2));
-
-
 ```
 
 - 端点与端点重合
@@ -309,8 +311,6 @@ radial = new Radial(Dot(-3, 0), Dot(4, 2));
 segment = new Segment(Dot(0, 2), Dot(3, -1));
 line = new Line(Dot(4, 2), Dot(5, 0));
 radial = new Radial(Dot(0, 2), Dot(3, -1));
-
-
 ```
 
 - 端点与交点重合
@@ -319,8 +319,6 @@ radial = new Radial(Dot(0, 2), Dot(3, -1));
 segment = new Segment(Dot(0, 2), Dot(3, -1));
 line = new Line(Dot(0, 2), Dot(2, 2));
 radial = new Radial(Dot(0, 2), Dot(3, -1));
-
-
 ```
 
 #### 将扩展后的功能封装为独立模块
@@ -338,10 +336,7 @@ container->AddGraph('S', 1, 1, 1, -1);
 container->AddGraph('L', 2, 2, 2, 0);
 container->AddGraph('R', 3, 3, 3, 4);
 Assert::AreEqual(container->Size(), 0);
-
 ……
-
-
 ```
 
 ------
@@ -385,7 +380,7 @@ Assert::AreEqual(container->Size(), 0);
 
 + 输入整数小于等于-100000或大于等于100000的异常
 
-  为了防止输入的整数超过$(-100000,1000001)$的范围
+  为了防止输入的整数超过$(-100000,100000)$的范围
 
   ```c++
   WRITE("-100000");// 将-100000写入文件
@@ -468,14 +463,14 @@ Assert::AreEqual(container->Size(), 0);
 
 首先发现一个问题：VS封装的dll文件和Qt并不兼容，不能够直接导入使用，需要在qt内新建一个c++ library项目，将所有的.h和.cpp源文件导入并编译成dll和lib文件，才能够在UI模块被Qt所使用。
 
-在Qt的Widgets中，我使用两个QLineEdit模块作为输入要添加\删除的几何对象的属性、使用三个QPushButton分别用来打开文件、删除几何对象和添加几何对象。其具体的工作流程如下：
+在Qt的Widgets中，我使用两个QLineEdit模块作为输入要添加和删除的几何对象的属性、使用三个QPushButton分别用来打开文件、删除几何对象和添加几何对象。其具体的工作流程如下：
 
 + 点击“打开文件”按钮
 
   ```c++
-  QString fileName=QFileDialog::getOpenFileName(this, QString("choose a file"), ".");
+  QString fileName = QFileDialog::getOpenFileName(this, QString("choose a file"), ".");
   if (fileName.isEmpty()) return;
-  io=new IOHandler(fileName.toStdString(),"output.txt");
+  io = new IOHandler(fileName.toStdString(),"output.txt");
   ```
 
   点击“打开文件”按钮时，该代码块在slot（自带的回调机制）内被调用，使用`QFileDialog::getOpenFileName`打开一个熟悉的文件选择目录框，然后使用封装好的IOHandler模块读取该文件和创建默认的输出文件output.txt。
@@ -485,18 +480,18 @@ Assert::AreEqual(container->Size(), 0);
   ```c++
   stringstream buf(ui->addText->text().append('\n').toStdString());
   ...
-  char type=readGraphType(&buf);
-  int x1=readNum(&buf);
-  int y1=readNum(&buf);
-  int x2=readNum(&buf);
-  int y2=readNum(&buf);
+  char type = readGraphType(&buf);
+  int x1 = readNum(&buf);
+  int y1 = readNum(&buf);
+  int x2 = readNum(&buf);
+  int y2 = readNum(&buf);
   container->AddGraph(type,x1,y1,x2,y2);
   updateList();
   updateGraph();
   updateIntersect();
   ```
 
-  点击“添加几何对象”按钮时，该代码块被调用，其作用为将`addText`文本框中的内容（即`L 0 0 1 1`）读取，末尾添加一个`\n`以防止后续的异常，并转化为一个`stringstream`流。使用类似于文件读取的方法，用`>>`操作将buf中的值写入相应的变量中，如果有异常就抛出异常（`readGraphType()`和`readNum()`负责）。然后直接调用接口`AddGraph`添加图形。
+  点击“添加几何对象”按钮时，该代码块被调用，其作用为将`addText`文本框中的内容（即`L 0 0 1 1`）读取，末尾添加一个`\n`以强调结束，并转化为一个`stringstream`流。使用类似于文件读取的方法，用`>>`操作将buf中的值写入相应的变量中，如果有异常就抛出异常（`readGraphType()`和`readNum()`负责）。然后直接调用接口`AddGraph`添加图形。
 
   添加完成后，调用三个`update*`函数，从container中取出当前已有几何图形列表、所有图形和所有交点，然后在三个`update*`中，绘制列表框、图形曲线和交点数目。
 
@@ -541,7 +536,7 @@ Assert::AreEqual(container->Size(), 0);
   update();
   ```
 
-  在绘制射线时，使用了一种类似**跳棋**的方法绘制射线：设端点为A，通过点为B，那么以B为台阶，让A跳到C点（即B为AC的中点）；令B=C，再让A跳，直到到达图像边界。然后再以A和B两点利用`QPainter::drawLine`绘制线段来表示射线。
+  在绘制射线时，使用了一种类似**跳棋**的方法绘制射线：设端点为A，射线通过点为B，那么以B为台阶，让A跳到C点（即B为AC的中点）；令B=C，再让A跳，直到超过图像边界。然后再以A和B两点利用`QPainter::drawLine`绘制线段来表示射线。
 
 
 
