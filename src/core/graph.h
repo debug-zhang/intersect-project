@@ -1,5 +1,7 @@
 #pragma once
 #include "exception.h"
+#include <string.h>
+using namespace std;
 
 class _declspec(dllexport) Graph {
 public:

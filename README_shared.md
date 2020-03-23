@@ -6,53 +6,6 @@
 
 
 
-## 1. 教学班级和**可克隆**的 Github 项目地址
-
-- 教学班级：006
-
-- 项目地址：https://github.com/blackbird52/IntersectProject.git
-
-- 目录结构：
-
-  ```
-  IntersectProject/
-  ├── bin
-  │   ├── intersect.exe
-  │   └── core.dll
-  ├── README.md
-  ├── src
-  │   ├── main.cpp
-  │   └── core
-  │   │   ├── container.h
-  │   │   ├── dot.h
-  │   │   ├── exception.h
-  │   │   ├── framework.h
-  │   │   ├── graph.h
-  │   │   ├── IOHandler.h
-  │   │   ├── line.h
-  │   │   ├── pch.h
-  │   │   ├── radial.h
-  │   │   ├── segment.h
-  │   │   ├── container.cpp
-  │   │   ├── dllmain.cpp
-  │   │   ├── dot.cpp
-  │   │   ├── IOHandler.cpp
-  │   │   ├── line.cpp
-  │   │   ├── pch.cpp
-  │   │   ├── radial.cpp
-  │   │   └── segment.cpp
-  └── test
-      ├── pch.h
-      ├── pch.cpp
-      ├── UnitTestIntersect.cpp
-      ├── UnitTestInterface.cpp
-      └── UnitTestException.cpp
-  ```
-
-------
-
-
-
 ## 4. 计算模块接口的设计与实现过程。说明你的算法的关键（不必列出源代码），以及独到之处
 
 ### 解题思路
@@ -185,7 +138,6 @@ double denominator = A1 * B2 - A2 * B1;
 if (!DoubleEquals(denominator, 0)) {
     ……
 }
-
 ```
 
 交点计算同样套用公式 $(\frac{B_1C_2-B_2C_1}{A_1B_2-A_2B_1},\ \frac{A_2C_1-A_1C_2}{A_1B_2-A_2B_1})$。
@@ -194,8 +146,30 @@ if (!DoubleEquals(denominator, 0)) {
 double x = (B1 * C2 - B2 * C1) / denominator;
 double y = (A2 * C1 - A1 * C2) / denominator;
 Dot* intersect = new Dot(x, y);
-
 ```
+
+两几何对象平行而且共线的时候，也有可能存在有限的交点（即恰有一个交点）或存在异常：
+
+```c++
+    else if (平行而且共线) {
+		if (都是直线) {
+			throw 无穷交点异常();
+		} else if (都是射线) {
+			if (垂直于x轴){
+				if (相离) {;
+				} else if (恰有一个交点){					
+                    计算交点();
+				} else {
+					throw 无穷交点异常();
+				}
+			} else if(不垂直于x轴){...}
+		} else if(g1是射线&&g2是线段){...}
+        else if(g1是线段&&g2是射线){...}
+        else if(g1是线段&&g2是线段){...}
+}
+```
+
+
 
 #### 判断
 
@@ -208,7 +182,6 @@ Dot* intersect = new Dot(x, y);
 ```c++
 return IsSameSymbol((cross_point->GetX() - end_point->GetX()), (intersect->GetX() - end_point->GetX()))
 		&& IsSameSymbol((cross_point->GetY() - end_point->GetY()), (intersect->GetY() - end_point->GetY()));
-
 ```
 
 ##### 判断交点是否在线段上
@@ -220,12 +193,11 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 		&& intersect->GetX() <= max(end_point1->GetX(), end_point2->GetX())
 		&& intersect->GetY() >= min(end_point1->GetY(), end_point2->GetY())
 		&& intersect->GetY() <= max(end_point1->GetY(), end_point2->GetY());
-
 ```
 
 #### 封装为独立模块
 
-封装后只暴露 $Container$ 类，设计以下接口：
+封装后暴露 $Container$ 类，设计以下接口：
 
 - 项目核心功能交点计算
   - `void AddGraph(char type,int x1, int y1, int x2, int y2);;`
@@ -235,6 +207,18 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 - 获取图形集合和交点集合，为 $UI$ 设计做准备
   - `vector<Graph*>* Getgraphs()`
   - `set<Dot>* GetDots()`
+
+封装后暴露 $IOHandler$ 类，设计以下接口：
+
+- 读取一个$(-100000, 100000)$范围内的整数
+  - `int readNum()`
+- 读取几何对象的数目$M\geq1$
+  - `int readLine()`
+- 读取结合对象类型
+  - `char readGraphType()`
+
++ 打印一个整数到文件
+  + `void outputInt(const int n)`
 
 
 
@@ -246,46 +230,9 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 其中，我们关注到，读写文件也占用了很长时间，这其实和我的测试方法有一定的关系：反复读写同一个文件，无形中增加了很多的IO时间。这是测试方法的弊端，代码这一部分使用了`fstream`，其优化空间也不大。
 
-但耗时最长的单体方法还是为`AddGraph`，但是考虑到其中很大部分是因为调用了`IntersectCalculate`方法，计算两个几何对象之间的交点。具体函数如下伪代码块所展示：
+但耗时最长的单体方法还是为`AddGraph`，但是考虑到其中很大部分是因为调用了`IntersectCalculate`方法，计算两个几何对象之间的交点。
 
-```c++
-void  Container::IntersectCalculate(Graph* g1, Graph* g2) {
-	if (!平行){
-		计算交点();
-        判断在范围内();
-	} 
-    else if (平行&&共线) {
-		if (都是直线) {
-			throw 无穷交点异常();
-		} else if (都是射线) {
-			if (垂直于x轴){
-				if (相离) {;
-				} else if (一个交点){					
-                    计算交点();
-				} else {
-					throw 无穷交点异常();
-				}
-			} else {
-				//不垂直于x轴
-				if (相离) {;
-				} else if (一个交点){					
-                    计算交点();
-				} else {
-					throw 无穷交点异常();
-				}
-		} else if(g1是射线&&g2是线段){
-                ...
-        }
-        else if(g1是线段&&g2是射线){
-                ...
-        }
-        else if(g1是线段&&g2是线段){
-                ...
-        }
-}
-```
-
-这个函数有两个地方耗时可能比较多：一个是计算交点的浮点数计算模块，设计大量的计算；另一个是对于很多特殊情况的判断，尤其是需要考虑到线段和射线共线的几种情况，做了非常多的特殊判断。
+这个函数有三个地方耗时可能比较多：一个是计算交点的浮点数计算模块，涉及大量的浮点计算；另一个是对于很多特殊情况的判断，尤其是需要考虑到线段和射线共线的几种情况，做了非常多的if-else判断，在运行时会增加很多跳转；第三个是因为AddDot方法使用了内置的set容器，使用红黑树作为存储结构，在添加一个点时，需要判断多次的$<$关系，其时间复杂度为$O(logn)$。
 
 
 
@@ -403,6 +350,8 @@ Assert::AreEqual(container->Size(), 0);
 
 ## 9. 计算模块部分异常处理说明
 
+注：下述`WRITE()`为一个宏函数，将制定字符串写入测试文件，以便模拟IO读取中遇到的异常
+
 + 输入不是整数的异常
 
   为了防止输入小数或者异常字符的情况
@@ -410,10 +359,10 @@ Assert::AreEqual(container->Size(), 0);
   ```c++
   WRITE("wordsssss");// 将wordsssss写入文件
   auto func0 = [&] {io->readNum(); };// 尝试读取文件
-  Assert::ExpectException<not_integer_exception>(func0);// 捕获该异常
+  Assert::ExpectException<not_integer_exception>(func0);// 捕获“不是整数”异常
   WRITE("0.136");// 将0.136写入文件
   auto func2 = [&] {io->readNum(); };// 尝试读取文件
-  Assert::ExpectException<not_integer_exception>(func2);// 捕获该异常
+  Assert::ExpectException<not_integer_exception>(func2);// 捕获“不是整数”异常
   ```
 
   wordsssss不为整数，0.135也不是整数，故抛出`not_integer_exception`异常
@@ -427,7 +376,7 @@ Assert::AreEqual(container->Size(), 0);
   ```c++
   WRITE("0");// 将0写入文件
   auto func0 = [&] {io->readLine(); };// 尝试读取文件
-  Assert::ExpectException<not_valid_integer_exception>(func0);// 捕获该异常
+  Assert::ExpectException<not_valid_integer_exception>(func0);// 捕获“几何对象数量小于1”异常
   ```
 
   输入的整数0代表有0个几何对象，不合法，故抛出`not_valid_integer_exception`异常
@@ -441,7 +390,7 @@ Assert::AreEqual(container->Size(), 0);
   ```c++
   WRITE("-100000");// 将-100000写入文件
   auto func = [&] {io->readNum(); };// 尝试读取文件
-  Assert::ExpectException<over_range_exception>(func);
+  Assert::ExpectException<over_range_exception>(func);// 捕获“坐标超出范围”异常
   ```
 
   输入的-100000超出了$(-100000,100000)$的坐标限制，故抛出`over_range_exception`异常
@@ -455,7 +404,7 @@ Assert::AreEqual(container->Size(), 0);
   ```c++
   WRITE("l");// 将l写入文件
   auto func2 = [&] {io->readGraphType(); };// 尝试读取文件
-  Assert::ExpectException<undefined_graph_exception>(func2);
+  Assert::ExpectException<undefined_graph_exception>(func2);// 捕获“几何对象类型不正确”异常
   ```
 
   输入的小写字母l不能够代表任何一种几何对象，故抛出`undefined_graph_exception`异常
@@ -469,8 +418,8 @@ Assert::AreEqual(container->Size(), 0);
   ```c++
   Dot d0(4.123, 0.1341);
   Dot d1(3.123 + 0.9 + 0.1, -8.1341 + 8.2682);
-  auto func0 = [&] {Graph* g = new Line(d0, d1); };
-  Assert::ExpectException<dot_superposition_exception>(func0);
+  auto func0 = [&] {Graph* g = new Line(d0, d1); };// 尝试以两个相同的点构造直线
+  Assert::ExpectException<dot_superposition_exception>(func0);// 捕获“两点相同”异常
   ```
 
   新建一条直线时，发现直线经过两个点$(4.123, 0.1341)$和点$(4.123,01241)$是同一个点，他们不能够描述一条特定的直线，故抛出`dot_superposition_exception`异常
@@ -486,13 +435,13 @@ Assert::AreEqual(container->Size(), 0);
   Dot d1(1, 1);
   Dot d2(2, 2);
   Dot d3(3, 3);
-  auto func = [&] {
+  auto func = [&] {// 尝试构造一条射线和一条线段，他们有公共部分
   	Container* c = new Container();
   	Graph* s = new Segment(d0, d2);
   	Graph* r = new Radial(d1, d3);
   	c->IntersectCalculate(s, r);
   };
-  Assert::ExpectException<infinate_intersect_exception>(func);
+  Assert::ExpectException<infinate_intersect_exception>(func);// 捕获“无数个交点”异常
   ```
 
   经过$(0,0)$和$(2,2)$的线段，与起点为$(1,1)$通过$(3,3)$的射线，在$x\in (1,2)$的范围内有无数个交点，故抛出`infinate_intersect_exception`异常
@@ -504,9 +453,9 @@ Assert::AreEqual(container->Size(), 0);
   为了防止命令行输入的输入文件不存在的情况
 
   ```c++
-  auto func = [&] {IOHandler* io = new IOHandler(0, NULL, 1); };
-  Assert::ExpectException<file_not_exist_exception>(func);
-  
+  // 提前删除默认读入的文件
+  auto func = [&] {IOHandler* io = new IOHandler(0, NULL, 1); };// 尝试读取该文件
+  Assert::ExpectException<file_not_exist_exception>(func);// 捕获“文件不存在”异常
   ```
 
   手动将输入文件删除，IOHandler找不到该文件，故抛出`file_not_exist_exception`异常
@@ -515,10 +464,130 @@ Assert::AreEqual(container->Size(), 0);
 
 ## 10. 界面模块的详细设计过程
 
+![](./assets/ui.png)
+
+首先发现一个问题：VS封装的dll文件和Qt并不兼容，不能够直接导入使用，需要在qt内新建一个c++ library项目，将所有的.h和.cpp源文件导入并编译成dll和lib文件，才能够在UI模块被Qt所使用。
+
+在Qt的Widgets中，我使用两个QLineEdit模块作为输入要添加\删除的几何对象的属性、使用三个QPushButton分别用来打开文件、删除几何对象和添加几何对象。其具体的工作流程如下：
+
++ 点击“打开文件”按钮
+
+  ```c++
+  QString fileName=QFileDialog::getOpenFileName(this, QString("choose a file"), ".");
+  if (fileName.isEmpty()) return;
+  io=new IOHandler(fileName.toStdString(),"output.txt");
+  ```
+
+  点击“打开文件”按钮时，该代码块在slot（自带的回调机制）内被调用，使用`QFileDialog::getOpenFileName`打开一个熟悉的文件选择目录框，然后使用封装好的IOHandler模块读取该文件和创建默认的输出文件output.txt。
+
++ 在输入框输入`L 0 0 1 1`，然后点击“添加几何对象”
+
+  ```c++
+  stringstream buf(ui->addText->text().append('\n').toStdString());
+  ...
+  char type=readGraphType(&buf);
+  int x1=readNum(&buf);
+  int y1=readNum(&buf);
+  int x2=readNum(&buf);
+  int y2=readNum(&buf);
+  container->AddGraph(type,x1,y1,x2,y2);
+  updateList();
+  updateGraph();
+  updateIntersect();
+  ```
+
+  点击“添加几何对象”按钮时，该代码块被调用，其作用为将`addText`文本框中的内容（即`L 0 0 1 1`）读取，末尾添加一个`\n`以防止后续的异常，并转化为一个`stringstream`流。使用类似于文件读取的方法，用`>>`操作将buf中的值写入相应的变量中，如果有异常就抛出异常（`readGraphType()`和`readNum()`负责）。然后直接调用接口`AddGraph`添加图形。
+
+  添加完成后，调用三个`update*`函数，从container中取出当前已有几何图形列表、所有图形和所有交点，然后在三个`update*`中，绘制列表框、图形曲线和交点数目。
+
++ 在输入框内输入`L 0 0 1 1`，然后点击“删除几何对象”
+
+  同理“添加几何对象”，只是将`AddGraph()`换成了`DeleteGraph()`接口。
+
++ 绘制列表框
+
+  ```c++
+  QStringList list;
+  for(Graph *g: container-> GetGraphs()){
+      list<<QString::fromStdString(g->ToString());
+  }
+  QStringListModel *model = new QStringListModel(list);
+  ui->list->setModel(model);
+  ```
+
+  更新列表框方法很简单，从container中取出所有的几何对象，将其`toString()`为`S 10 2 5 8`这样的格式，然后压入一个`QStringList`对象，将其转化为`QStringListModel`后展示。
+
++ 绘制几何曲线
+
+  ```c++
+  QPainter painter(&image);
+  // 画框
+  painter.setRenderHint(QPainter::Antialiasing, true);
+  painter.drawLine(0, SIZE/2,SIZE+10,SIZE/2);//绘制x轴
+  painter.drawLine(SIZE/2, 0,SIZE/2,SIZE+10);//绘制y轴
+  // 画图
+  for (Graph* g : container->GetGraphs()) {
+     if (g->type=='L') {
+          绘制直线();
+      } else if (g->type=='R') {
+          绘制射线()；
+      } else if (g->type=='S') {
+          绘制直线()；
+      }
+  //画点
+  for (pair<double,double> d:dots=container->GetDots()){
+      drawDot(&painter, d.first,d.second);
+  }
+  update();
+  ```
+
+  在绘制射线时，使用了一种类似**跳棋**的方法绘制射线：设端点为A，通过点为B，那么以B为台阶，让A跳到C点（即B为AC的中点）；令B=C，再让A跳，直到到达图像边界。然后再以A和B两点利用`QPainter::drawLine`绘制线段来表示射线。
+
 
 
 ## 11. 界面模块与计算模块的对接
 
+由于VS的dll文件无法与Qt对接，需要在Qt新建一个C++ Library项目，加入所有的.h头文件和.cpp源文件（再加上Qt自带的两个用于支持dll的.h头文件）进行编译。
+
+将编译得到的.lib和.dll文件，复制到Qt主项目目录下，并在Qt主目录点击右键“添加库”，选择外部库->选择.lib文件->windows->动态，其自动在.pro（项目文件）下添加以下几行
+
+```
+win32: LIBS += -L$$PWD/./ -ldllQtProject # 假设.lib文件命名为dllQtProject.lib
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+```
+
+再导入所有的.h头文件，即可再界面模块使用计算模块。
+
+在界面模块中，使用到了计算模块提供的如下几个接口：
+
+```c++
+int Container::Size();
+vector<Graph*>* Container::GetGraphs();
+set<pair<double,double>>* Container::GetDots();
+void Container::AddGraph(char type, int x1, int y1, int x2, int y2);
+Graph* Container::DeleteGraph(char type, int x1, int y1, int x2, int y2);
+```
+
+```c++
+int IOHandler::readNum();
+int IOHandler::readLine();
+char IOHandler::readGraphType();
+```
+
+
+
 
 
 ## 12. 结对的过程
+
+在结对过程中，使用了一段时间的屏幕共享，但是由于两人微小地域时差和作息不一致，并没有全程使用。
+
+![](./assets/screen.png)
+
+还使用了github上的issue和pull request来管理仓库
+
+![](./assets/issue.png)
+
+![](./assets/pr.png)
+

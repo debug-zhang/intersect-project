@@ -1,15 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <sstream>
-#include <iostream>
-#include <string>
 #include "../../src/core/container.h"
-#include <QStringListModel>
-#include <list>
-#include <QDir>
-#include <QFileDialog>
-#include <fstream>
-#include <QDebug>
+#include <QMessageBox>
+#include <string>
 
 using namespace std;
 #define SIZE 600
@@ -33,14 +26,14 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::updateList(){
-    QStringList list;
-    vector<Graph*>* graphs=container-> GetGraphs();
-    //list<<QString("L 0 0 1 1")<<QString("R 0 3 1 2")<<QString("S 0 1 2 4")<<QString("S -3 0 -4 2");
-    for(Graph *g:*graphs){
-        list<<QString::fromStdString(g->ToString());
-    }
-    QStringListModel *model = new QStringListModel(list);
-    ui->list->setModel(model);
+        QStringList list;
+        vector<Graph*>* graphs=container-> GetGraphs();
+        //list<<QString("L 0 0 1 1")<<QString("R 0 3 1 2")<<QString("S 0 1 2 4")<<QString("S -3 0 -4 2");
+        for(Graph *g:*graphs){
+            list<<QString::fromStdString(g->ToString());
+        }
+        QStringListModel *model = new QStringListModel(list);
+        ui->list->setModel(model);
 }
 
 void MainWindow::updateIntersect(){
@@ -90,30 +83,44 @@ void MainWindow::updateGraph(){
 
 void MainWindow::on_addGraph_clicked()
 {
-    stringstream buf(ui->addText->text().toStdString());
+    stringstream buf(ui->addText->text().append('\n').toStdString());
     ui->delText->clear();
     ui->addText->clear();
-    char type;
-    int x1,y1,x2,y2;
-    buf >> type >>x1>>y1>>x2>>y2;
+    try{
+    char type=readGraphType(&buf);
+    int x1=readNum(&buf);
+    int y1=readNum(&buf);
+    int x2=readNum(&buf);
+    int y2=readNum(&buf);
     container->AddGraph(type,x1,y1,x2,y2);
     updateList();
     updateGraph();
     updateIntersect();
+    }catch (exception &e){
+        QMessageBox::information(NULL, "出现异常", e.what());
+        return ;
+    }
 }
 
 void MainWindow::on_delGraph_clicked()
 {
-    stringstream buf(ui->delText->text().toStdString());
+    stringstream buf(ui->delText->text().append('\n').toStdString());
     ui->addText->clear();
     ui->delText->clear();
-    char type;
-    int x1,y1,x2,y2;
-    buf >> type >> x1 >> y1 >> x2 >> y2;
+    try{
+    char type=readGraphType(&buf);
+    int x1=readNum(&buf);
+    int y1=readNum(&buf);
+    int x2=readNum(&buf);
+    int y2=readNum(&buf);
     container->DeleteGraph(type,x1,y1,x2,y2);
     updateList();
     updateGraph();
     updateIntersect();
+    }catch (exception &e){
+        QMessageBox::information(NULL, "出现异常", e.what());
+        return ;
+    }
 }
 
 void MainWindow::paintEvent(QPaintEvent *event){
@@ -147,4 +154,36 @@ void MainWindow::on_openFile_clicked()
     updateList();
     updateGraph();
     updateIntersect();
+}
+
+int MainWindow::readInt(stringstream *buf){
+    int res;
+    *buf >> res;
+    if (buf->peek() != ' ' && buf->peek() != '\n') {
+        buf->clear();
+        throw not_integer_exception();
+    }
+    return res;
+}
+int MainWindow::readNum(stringstream *buf){
+    int res = readInt(buf);
+    if (res >= RANGE || res <= -RANGE) {
+        throw over_range_exception();
+    }
+    return res;
+}
+int MainWindow::readLine(stringstream *buf){
+    int res = readInt(buf);
+    if (res < 1) {
+        throw not_valid_integer_exception();
+    }
+    return res;
+}
+char MainWindow::readGraphType(stringstream *buf){
+    char res;
+    *buf >> res;
+    if (res != 'L' && res != 'R' && res != 'S' && res != 'C') {
+        throw undefined_graph_exception();
+    }
+    return res;
 }

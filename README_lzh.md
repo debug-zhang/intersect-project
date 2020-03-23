@@ -1,4 +1,4 @@
-### 
+# [2020 BUAA 软件工程]结对项目作业
 
 | 项目                                 | 内容                                                         |
 | :----------------------------------- | :----------------------------------------------------------- |
@@ -81,11 +81,13 @@
 
 #### 信息隐藏
 
-改进了计算几何对象交点的程序，将其封装到Container内，其具体实现细节不对外公开。
+改进了计算几何对象交点的程序，将其封装到Container内，其条件判断、求解方法不公开。
 
 设计了IOHandler模块，作为输入输出的总控制器。将实现细节封装进模块中，比如文件指针、文件路径、具体读写文件的方法和读写时的异常情况。
 
 #### 接口设计
+
+Container只暴露`Size()`，`Getgraphs()`，`GetDots()`和`IntersectCalculate()`四个接口。
 
 IOHandler类只暴露四个接口`readNum()​`，`readLine()`，`readGraphType()`和`outputInt()`，分别用于读入一个范围在$(-100000,100000)$的整数、读入几何对象数量，读入一个表示几何对象类型的字符和输出一个整数。四个接口涵盖了IO方面所有的功能。
 
@@ -117,13 +119,39 @@ IOHandler类只暴露四个接口`readNum()​`，`readLine()`，`readGraphType(
 但是对于每个暴露出来的接口，我都写了接口文档，说明了每个模块的作用、参数、返回值和期望的异常，也许在一个侧面反映了契约式设计的一些特点。
 
 ```c++
-    /**
-	* read an integer from ifstream
-	* @params: None
-	* @returns: an integer from ifstream
-	* @exceptions: not_integer_exception - if is not an integer(decimal, char, ect)
-	**/
-	int readInt();
+/**
+* read an integer, ensure in range(-100000, 100000)
+* params: None
+* returns: aa integer in range(-100000,100000) from ifstream
+* exceptions: not_integer_exception - if is not an integer(decimal, char, ect)
+*	   		  over_range_exception - if integer is not in range (-100000, 100000)
+**/
+int readNum();
+
+/**
+* read an integer, ensure in range[1, inf), which means how many graphs in the map
+* params: None
+* returns: an integer in range[1,inf) from ifstream
+* exceptions: not_integer_exception - if is not an integer(decimal, char, ect)
+*			 not_valid_integer_exception - if not in range[1, inf)
+**/
+int readLine();
+
+/**
+* read a char which means graph type, which must in [L, R, S, C]
+* params: None
+* returns: a char in [L, R, S, C]
+* exceptions:  undefined_graph_exception - if is not a valid type of graph 
+**/
+char readGraphType();
+
+/**
+* print an integer into ofstream
+* params: const int n
+* returns:
+* exceptions:
+**/
+void outputInt(const int n);
 ```
 
 
@@ -151,21 +179,22 @@ IOHandler类只暴露四个接口`readNum()​`，`readLine()`，`readGraphType(
 
 ### 14.时间记录
 
-| PSP2.1                                  | Personal Software Process Stages        | 预估耗时（分钟） | 实际耗时（分钟） |
-| :-------------------------------------- | :-------------------------------------- | :--------------- | :--------------- |
-| Planning                                | 计划                                    |                  |                  |
-| · Estimate                              | · 估计这个任务需要多少时间              | 10               |                  |
-| Development                             | 开发                                    |                  |                  |
-| · Analysis                              | · 需求分析 (包括学习新技术)             | 300              |                  |
-| · Design Spec                           | · 生成设计文档                          | 3                |                  |
-| · Design Review                         | · 设计复审 (和同事审核设计文档)         | 10               |                  |
-| · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) | 5                |                  |
-| · Design                                | · 具体设计                              | 10               |                  |
-| · Coding                                | · 具体编码                              | 20               |                  |
-| · Code Review                           | · 代码复审                              | 15               |                  |
-| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 60               |                  |
-| Reporting                               | 报告                                    |                  |                  |
-| · Test Report                           | · 测试报告                              | 10               |                  |
-| · Size Measurement                      | · 计算工作量                            | 5                |                  |
-| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 5                |                  |
-|                                         | 合计                                    | 310              |                  |
+| PSP2.1                                  | Personal Software Process Stages        | 预估耗时（分钟） | 实际耗时（分钟）        |
+| :-------------------------------------- | :-------------------------------------- | :--------------- | :---------------------- |
+| Planning                                | 计划                                    |                  |                         |
+| · Estimate                              | · 估计这个任务需要多少时间              | 10               | 5                       |
+| Development                             | 开发                                    |                  |                         |
+| · Analysis                              | · 需求分析 (包括学习新技术)             | 300              | 500（包括搭建、学习Qt） |
+| · Design Spec                           | · 生成设计文档                          | 15               | 20                      |
+| · Design Review                         | · 设计复审 (和同事审核设计文档)         | 10               | 5                       |
+| · Coding Standard                       | · 代码规范 (为目前的开发制定合适的规范) | 5                | 3                       |
+| · Design                                | · 具体设计                              | 10               | 5                       |
+| · Coding                                | · 具体编码                              | 20               | 15                      |
+| · Code Review                           | · 代码复审                              | 15               | 10                      |
+| · Test                                  | · 测试（自我测试，修改代码，提交修改）  | 60               | 240                     |
+| Reporting                               | 报告                                    |                  |                         |
+| · Test Report                           | · 测试报告                              | 10               | 15                      |
+| · Size Measurement                      | · 计算工作量                            | 5                | 2                       |
+| · Postmortem & Process Improvement Plan | · 事后总结, 并提出过程改进计划          | 5                | 5                       |
+|                                         | 合计                                    | 310              | 825                     |
+

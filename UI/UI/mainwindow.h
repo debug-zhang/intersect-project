@@ -11,6 +11,15 @@
 #include <QImage>
 #include <QColor>
 #include <set>
+#include <sstream>
+#include <iostream>
+#include <string>
+#include <QStringListModel>
+#include <list>
+#include <QDir>
+#include <QFileDialog>
+#include <fstream>
+#include <QDebug>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -43,5 +52,10 @@ private:
     void drawSegment(QPainter *painter,double x1,double y1,double x2,double y2);
     void drawDot(QPainter *painter,double x,double y);
     void updateIntersect();
+
+    int readInt(stringstream *buf);
+    int readNum(stringstream *buf);
+    int readLine(stringstream *buf);
+    char readGraphType(stringstream *buf);
 };
 #endif // MAINWINDOW_H
