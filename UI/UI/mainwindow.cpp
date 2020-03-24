@@ -42,6 +42,9 @@ void MainWindow::updateIntersect(){
 }
 
 void MainWindow::updateGraph(){
+    image = QImage(SIZE+5,SIZE+5,QImage::Format_RGB32);
+    image.fill(qRgb(255,255,255));
+    update();
     QPainter painter(&image);
     // 画框
     painter.setRenderHint(QPainter::Antialiasing, true);
