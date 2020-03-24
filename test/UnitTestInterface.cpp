@@ -72,6 +72,33 @@ namespace UnitTest
 			auto func8 = [&] {container->DeleteGraph('R', -3, 0, 4, 2); };
 			Assert::ExpectException<graph_not_exist>(func8);
 			Assert::AreEqual((int)container->GetGraphs()->size(), 0);
+
+			container = new Container();
+			container->AddGraph('L', 0, 0, 1, 1);
+			container->AddGraph('L', 0, 0, 1, -1);
+			container->AddGraph('R', 5, -10, 5, 0);
+			container->AddGraph('R', -5, -10, -5, 0);
+			container->AddGraph('S', -5, 5, 5, 5);
+			container->AddGraph('S', -4, -4, 4, -4);
+			Assert::AreEqual(container->Size(), 7);
+			container->DeleteGraph('S', -4, -4, 4, -4);
+			Assert::AreEqual(container->Size(), 5);
+			Assert::AreEqual((int)container->GetGraphs()->size(), 5);
+			container->DeleteGraph('S', -5, 5, 5, 5);
+			Assert::AreEqual(container->Size(), 5);
+			Assert::AreEqual((int)container->GetGraphs()->size(), 4);
+			container->DeleteGraph('R', -5, -10, -5, 0);
+			Assert::AreEqual(container->Size(), 3);
+			Assert::AreEqual((int)container->GetGraphs()->size(), 3);
+			container->DeleteGraph('R', 5, -10, 5, 0);
+			Assert::AreEqual(container->Size(), 1);
+			Assert::AreEqual((int)container->GetGraphs()->size(), 2);
+			container->DeleteGraph('L', 0, 0, 1, -1);
+			Assert::AreEqual(container->Size(), 0);
+			Assert::AreEqual((int)container->GetGraphs()->size(), 1);
+			container->DeleteGraph('L', 0, 0, 1, 1);
+			Assert::AreEqual(container->Size(), 0);
+			Assert::AreEqual((int)container->GetGraphs()->size(), 0);
 		}
 	};
 

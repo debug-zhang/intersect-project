@@ -269,6 +269,17 @@ Graph* Container::DeleteGraph(char type, int x1, int y1, int x2, int y2) {
 		if (graphs->at(i)->equals(graph_string)) {
 			delete_graph = graphs->at(i);
 			graphs->erase(graphs->begin() + i);
+
+			dots->clear();
+			vector<Graph*>* new_graphs = new vector<Graph*>;
+			new_graphs->swap(*graphs);
+			for (Graph* graph1 : *new_graphs) {
+				for (Graph* graph2 : *graphs) {
+					IntersectCalculate(graph1, graph2);
+				}
+				graphs->push_back(graph1);
+			}
+
 			return delete_graph;
 		}
 	}
