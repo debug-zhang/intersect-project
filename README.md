@@ -4,6 +4,52 @@
 
 # [2020 BUAA 软件工程]结对项目作业
 
+## 目录结构
+
+- bin 为核心模块可执行文件所在文件夹 
+- gui 为界面模块可执行文件所在文件夹
+
+```
+IntersectProject/
+├── bin
+│   ├── intersect.exe
+│   └── dllProject.dll
+├── gui
+│   └── UI.exe
+├── README.md
+├── src
+│   ├── main.cpp
+│   └── core
+│   │   ├── container.h
+│   │   ├── dot.h
+│   │   ├── exception.h
+│   │   ├── framework.h
+│   │   ├── graph.h
+│   │   ├── IOHandler.h
+│   │   ├── line.h
+│   │   ├── pch.h
+│   │   ├── radial.h
+│   │   ├── segment.h
+│   │   ├── container.cpp
+│   │   ├── dllmain.cpp
+│   │   ├── dot.cpp
+│   │   ├── IOHandler.cpp
+│   │   ├── line.cpp
+│   │   ├── pch.cpp
+│   │   ├── radial.cpp
+│   │   └── segment.cpp
+└── test
+    ├── pch.h
+    ├── pch.cpp
+    ├── UnitTestIntersect.cpp
+    ├── UnitTestInterface.cpp
+    └── UnitTestException.cpp
+```
+
+------
+
+
+
 ## 4. 计算模块接口的设计与实现过程。说明你的算法的关键（不必列出源代码），以及独到之处
 
 ### 解题思路
