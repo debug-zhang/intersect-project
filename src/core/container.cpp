@@ -179,7 +179,6 @@ void  Container::IntersectCalculate(Graph* g1, Graph* g2) {
 				//if line is vertical
 				double g1end1Y = ((Segment*)g1)->GetEndPoint1()->GetY();
 				double g1end2Y = ((Segment*)g1)->GetEndPoint2()->GetY();
-				double g2end1Y = ((Segment*)g2)->GetEndPoint1()->GetY();
 				double g2end2Y = ((Segment*)g2)->GetEndPoint2()->GetY();
 				if ((min(g1end1Y, g1end2Y) > max(g1end1Y, g2end2Y)) ||
 					(max(g1end1Y, g1end2Y) < min(g1end1Y, g2end2Y))) {
@@ -204,7 +203,6 @@ void  Container::IntersectCalculate(Graph* g1, Graph* g2) {
 				//line not vertical
 				double g1end1X = ((Segment*)g1)->GetEndPoint1()->GetX();
 				double g1end2X = ((Segment*)g1)->GetEndPoint2()->GetX();
-				double g2end1X = ((Segment*)g2)->GetEndPoint1()->GetX();
 				double g2end2X = ((Segment*)g2)->GetEndPoint2()->GetX();
 				if ((min(g1end1X, g1end2X) > max(g1end1X, g2end2X)) ||
 					(max(g1end1X, g1end2X) < min(g1end1X, g2end2X))) {
