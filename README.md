@@ -215,7 +215,7 @@ else if (平行而且共线) {
 
 即出现如下情况
 
-![](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/line.png)
+![line](./assets/line.png)
 
 #### 判断
 
@@ -260,7 +260,7 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 ## 5. 画出 UML 图显示计算模块部分各个实体之间的关系
 
-![ClassDiagram](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/ClassDiagram.png)
+![ClassDiagram](./assets/ClassDiagram.png)
 
 - `Dot` 继承了 `pair<double, double>`
 - `Line` 继承了 `Graph`
@@ -272,7 +272,7 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 对一组10000个随机几何对象共约250000个交点的运行结果如下
 
-![time_cost](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/time_cost.png)
+![time_cost](./assets/time_cost.png)
 
 其中，我们关注到，耗时最长的单体方法是 `AddGraph`，但是考虑到其中很大部分是因为调用了 `IntersectCalculate` 方法，计算两个几何对象之间的交点，所以分析该方法。
 
@@ -294,13 +294,13 @@ return intersect->GetX() >= min(end_point1->GetX(), end_point2->GetX())
 
 此处我们也学习到了很多细节知识，比如在封装 dll 时使用的 `fstream` 和`vector` 需要写成指针，以防止不同平台上模板不同导致的问题。
 
-![Warning](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/Warning.jpg)
+![Warning](./assets/Warning.jpg)
 
 ### 单元测试
 
 #### 覆盖率
 
-![Coverage](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/Coverage.jpg)
+![Coverage](./assets/Coverage.jpg)
 
 #### 扩展计算交点功能
 
@@ -511,7 +511,7 @@ Assert::ExpectException<graph_not_exist>(func0);
 - VS 封装的 dll 文件和 Qt 并不兼容，不能够直接导入使用.
 - 需要在 Qt 内新建一个c++ library项目，将所有的 .h 和 .cpp 源文件导入并编译成 dll 和 lib 文件，才能够在 UI 模块被 Qt 所使用。
 
-![ui](C:/ShareCache/张新泽_17373325/cources/软件工程/assets/ui.PNG)
+![ui](./assets/ui.PNG)
 
 在 Qt 的 `Widgets` 中，我们使用两个 `QLineEdit` 模块作为输入要添加和删除的几何对象的属性、使用三个`QPushButton` 分别用来打开文件、删除几何对象和添加几何对象。其具体的工作流程如下：
 
